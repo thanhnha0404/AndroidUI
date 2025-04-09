@@ -1,4 +1,4 @@
-package com.example.uiproject;
+package com.example.uiproject.dialog;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.example.uiproject.R;
 import com.example.uiproject.model.Car;
 import com.google.android.material.button.MaterialButton;
 

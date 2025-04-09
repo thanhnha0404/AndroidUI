@@ -196,7 +196,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Contact Dealer"
+                    android:text="Type"
                     android:textColor="#000000"
                     android:textSize="12sp" />
             </LinearLayout>
@@ -204,7 +204,7 @@
             <LinearLayout
                 android:id="@+id/carDetailsButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="43dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:orientation="vertical">
@@ -218,7 +218,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="Car details (Model, year...)"
+                    android:text="Brand"
                     android:textColor="#000000"
                     android:textSize="12sp" />
             </LinearLayout>
