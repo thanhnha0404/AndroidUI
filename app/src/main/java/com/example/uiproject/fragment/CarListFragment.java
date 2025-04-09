@@ -1,4 +1,4 @@
-package com.example.uiproject;
+package com.example.uiproject.fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +14,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.uiproject.dialog.CarDetailsDialog;
+import com.example.uiproject.dialog.FilterDialogFragment;
+import com.example.uiproject.R;
 import com.example.uiproject.adapter.CarAdapter;
 import com.example.uiproject.model.Car;
 
