@@ -17,13 +17,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.bumptech.glide.Glide;
 import com.example.uiproject.R;
+import com.example.uiproject.entity.CarDTO;
 import com.example.uiproject.model.Car;
 import com.google.android.material.button.MaterialButton;
 
 public class CarDetailsDialog extends DialogFragment {
 
-    private Car car;
+    private CarDTO car;
     private ImageView mainCarImage, thumbnail1, thumbnail2;
     private TextView carNameTextView, priceTextView, descriptionTextView, ratingTextView;
     private ImageButton favoriteButton, backButton, shareButton;
@@ -35,7 +37,7 @@ public class CarDetailsDialog extends DialogFragment {
     private int currentImageIndex = 0;
     private boolean isFavorite = false;
 
-    public static CarDetailsDialog newInstance(Car car) {
+    public static CarDetailsDialog newInstance(CarDTO car) {
         CarDetailsDialog dialog = new CarDetailsDialog();
         dialog.car = car;
         return dialog;
@@ -76,18 +78,22 @@ public class CarDetailsDialog extends DialogFragment {
         // Populate data from car object
         if (car != null) {
             carNameTextView.setText(car.getName());
-            priceTextView.setText(car.getPrice());
+            priceTextView.setText(car.getPrice().toString());
             
             // Set a default description for demonstration
-            descriptionTextView.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                    "Nulla facilisi. Mauris interdum mi nisi. Ut vestibulum placerat facilisis interdum mi nibh.");
+            descriptionTextView.setText(car.getDescription());
             
             ratingTextView.setText("4.5/5"); // Example rating
-            
+
+            Glide.with(requireContext())
+                    .load(car.getPictures().get(0))         // hoặc brand.getLogo() nếu là URL ảnh
+                    .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
+                    .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
+                    .into(mainCarImage);
+
             // Set initial image
-            mainCarImage.setImageResource(car.getImageResource());
-            thumbnail1.setImageResource(car.getImageResource());
-            thumbnail2.setImageResource(car.getImageResource());
+//            thumbnail1.setImageResource(car.getImageResource());
+//            thumbnail2.setImageResource(car.getImageResource());
         }
 
         // Set up click listeners
@@ -122,15 +128,15 @@ public class CarDetailsDialog extends DialogFragment {
             }
         });
 
-        // Thumbnail clicks change the main image
-        thumbnail1.setOnClickListener(v -> {
-            mainCarImage.setImageResource(car.getImageResource());
-        });
-
-        thumbnail2.setOnClickListener(v -> {
-            // If you have additional images, set them here
-            mainCarImage.setImageResource(car.getImageResource());
-        });
+//        // Thumbnail clicks change the main image
+//        thumbnail1.setOnClickListener(v -> {
+//            mainCarImage.setImageResource(car.getImageResource());
+//        });
+//
+//        thumbnail2.setOnClickListener(v -> {
+//            // If you have additional images, set them here
+//            mainCarImage.setImageResource(car.getImageResource());
+//        });
 
         // Book button
         bookButton.setOnClickListener(v -> {

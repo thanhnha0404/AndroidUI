@@ -42,6 +42,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.cloudinary:cloudinary-android:2.2.0")
 
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    implementation ("com.squareup.okhttp3:okhttp:4.9.0")
+
 
     // Import the Firebase BoM
     implementation(platform("com.google.firebase:firebase-bom:33.12.0"))

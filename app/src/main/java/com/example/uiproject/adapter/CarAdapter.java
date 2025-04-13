@@ -10,14 +10,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.uiproject.R;
+import com.example.uiproject.entity.CarDTO;
 import com.example.uiproject.model.Car;
 
 import java.util.List;
 
 public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
-    private List<Car> carList;
+    private List<CarDTO> carList;
     private OnCarClickListener listener;
 
     public interface OnCarClickListener {
@@ -25,7 +27,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         void onFavoriteClick(int position);
     }
 
-    public CarAdapter(List<Car> carList, OnCarClickListener listener) {
+    public CarAdapter(List<CarDTO> carList, OnCarClickListener listener) {
         this.carList = carList;
         this.listener = listener;
     }
@@ -39,12 +41,17 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull CarViewHolder holder, int position) {
-        Car car = carList.get(position);
-        
-        holder.carImageView.setImageResource(car.getImageResource());
+        CarDTO car = carList.get(position);
+
         holder.carNameTextView.setText(car.getName());
-        holder.priceTextView.setText(car.getPrice());
-        
+        holder.priceTextView.setText("Fee: " +  car.getPrice().toString() + "/day");
+        // Load ảnh bằng Glide
+        Glide.with(holder.itemView.getContext())
+                .load(car.getPictures().get(0))         // hoặc brand.getLogo() nếu là URL ảnh
+                .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
+                .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
+                .into(holder.carImageView);             // ImageView bạn muốn load vào
+
         // Set favorite icon based on car favorite status
         if (car.isFavorite()) {
             holder.favoriteButton.setImageResource(R.drawable.ic_favorite);
@@ -55,7 +62,7 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     @Override
     public int getItemCount() {
-        return carList.size();
+        return (carList != null ? carList.size() : 0);
     }
 
     public class CarViewHolder extends RecyclerView.ViewHolder {
@@ -84,9 +91,5 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
             });
         }
     }
-    
-    public void updateCarList(List<Car> newCarList) {
-        this.carList = newCarList;
-        notifyDataSetChanged();
-    }
+
 } 

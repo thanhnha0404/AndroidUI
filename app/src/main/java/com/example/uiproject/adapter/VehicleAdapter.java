@@ -46,13 +46,17 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
     @Override
     public void onBindViewHolder(@NonNull VehicleViewHolder holder, int position) {
         CarDTO vehicle = vehicleList.get(position);
-        
+
+        String name = vehicle.getName();
         // Set the vehicle data
-        holder.vehicleName.setText(vehicle.getName());
+        if (vehicle.getDiscount() != null && !vehicle.getDiscount().equals("")){
+            name = name + " Sale: " + vehicle.getDiscount() + "%";
+        }
+        holder.vehicleName.setText(name);
 
         // Load ảnh bằng Glide
         Glide.with(holder.itemView.getContext())
-                .load(vehicle.getPicture()) // hoặc brand.getLogo() nếu là URL ảnh
+                .load(vehicle.getPictures().get(0)) // hoặc brand.getLogo() nếu là URL ảnh
                 .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
                 .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
                 .into(holder.vehicleImage);             // ImageView bạn muốn load vào
@@ -83,7 +87,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
 
     @Override
     public int getItemCount() {
-        return vehicleList.size();
+       return (vehicleList != null ? vehicleList.size() : 0);
     }
 
     public static class VehicleViewHolder extends RecyclerView.ViewHolder {

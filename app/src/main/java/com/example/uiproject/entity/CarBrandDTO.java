@@ -1,7 +1,9 @@
 package com.example.uiproject.entity;
 
-public class CarBrandDTO {
-    private int categoryID;
+import java.io.Serializable;
+
+public class CarBrandDTO implements Serializable {
+    private Long id;
     private String name;
     private String description;
 
@@ -18,12 +20,12 @@ public class CarBrandDTO {
         this.total = total;
     }
 
-    public int getCategoryID() {
-        return categoryID;
+    public Long getId() {
+        return id;
     }
 
-    public void setCategoryID(int categoryID) {
-        this.categoryID = categoryID;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

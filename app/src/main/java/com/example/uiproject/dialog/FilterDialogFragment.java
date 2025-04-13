@@ -41,7 +41,7 @@ public class FilterDialogFragment extends DialogFragment {
     
     // Data
     private float minPrice = 0;
-    private float maxPrice = 3000000;
+    private float maxPrice = 30000000;
     private FilterDialogListener listener;
     
     private String selectedModel = "";
@@ -139,8 +139,7 @@ public class FilterDialogFragment extends DialogFragment {
                 );
             }
             
-            String message = "Applying filters: " + selectedTab + " cars with price range Rs." 
-                    + selectedMinPrice + " - Rs." + selectedMaxPrice;
+            String message = "Filter Applied";
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
             dismiss();
         });
@@ -275,8 +274,8 @@ public class FilterDialogFragment extends DialogFragment {
         format.setCurrency(Currency.getInstance("INR"));
         
         // Remove the currency symbol to just keep "Rs."
-        String formattedMin = "Rs." + String.format(Locale.getDefault(), "%,.0f", min);
-        String formattedMax = "Rs." + String.format(Locale.getDefault(), "%,.2f", max);
+        String formattedMin = "Fee: " + String.format(Locale.getDefault(), "%,.0f", min);
+        String formattedMax = "Fee: " + String.format(Locale.getDefault(), "%,.2f", max);
         
         priceRangeValue.setText(formattedMin + " - " + formattedMax);
     }
