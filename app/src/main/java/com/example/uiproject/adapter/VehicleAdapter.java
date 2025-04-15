@@ -47,12 +47,15 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
     public void onBindViewHolder(@NonNull VehicleViewHolder holder, int position) {
         CarDTO vehicle = vehicleList.get(position);
 
-        String name = vehicle.getName();
+
+        holder.vehicleName.setText(vehicle.getName());
+
+        String discount = "";
         // Set the vehicle data
         if (vehicle.getDiscount() != null && !vehicle.getDiscount().equals("")){
-            name = name + " Sale: " + vehicle.getDiscount() + "%";
+            discount = "Sale: " + vehicle.getDiscount() + "%";
         }
-        holder.vehicleName.setText(name);
+        holder.vehicleSale.setText(discount);
 
         // Load ảnh bằng Glide
         Glide.with(holder.itemView.getContext())
@@ -92,13 +95,14 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
 
     public static class VehicleViewHolder extends RecyclerView.ViewHolder {
         ImageView vehicleImage;
-        TextView vehicleName;
+        TextView vehicleName,vehicleSale;
         View selectedIndicator;
 
         public VehicleViewHolder(@NonNull View itemView) {
             super(itemView);
             vehicleImage = itemView.findViewById(R.id.iv_vehicle);
             vehicleName = itemView.findViewById(R.id.tv_vehicle_name);
+            vehicleSale = itemView.findViewById(R.id.tv_vehicle_sale);
             selectedIndicator = itemView.findViewById(R.id.selected_indicator);
         }
     }

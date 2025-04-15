@@ -28,7 +28,7 @@ import java.util.Locale;
 public class FilterDialogFragment extends DialogFragment {
 
     public interface FilterDialogListener {
-        void onFilterApplied(String model, String brand, String location, float minPrice, float maxPrice);
+        void onFilterApplied(String model, String brand, String location, Long minPrice, Long maxPrice);
     }
 
     // UI components
@@ -98,6 +98,7 @@ public class FilterDialogFragment extends DialogFragment {
 
         // Set initial values
         priceRangeSlider.setValues(minPrice, maxPrice);
+        priceRangeSlider.setStepSize(500000f);
         updatePriceRangeText(minPrice, maxPrice);
 
         // Set up dropdown listeners
@@ -125,8 +126,8 @@ public class FilterDialogFragment extends DialogFragment {
         searchButton.setOnClickListener(v -> {
             // Get range slider values
             List<Float> values = priceRangeSlider.getValues();
-            float selectedMinPrice = values.get(0);
-            float selectedMaxPrice = values.get(1);
+            Long selectedMinPrice = (long) Double.parseDouble(values.get(0).toString());
+            Long selectedMaxPrice = (long) Double.parseDouble(values.get(1).toString());
 
             // Apply filters and dismiss dialog
             if (listener != null) {
@@ -228,8 +229,8 @@ public class FilterDialogFragment extends DialogFragment {
     }
     
     private void showModelSelectionDialog() {
-        final String[] models = {"Sedan", "SUV", "Hatchback", "Convertible", "Pickup", "Van", "Coupe"};
-        
+        final String[] models = {"Sedan", "SUV", "Hatchback", "Convertible", "Pickup", "Van", "Coupe", "Supercar"};
+        // load tu api
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
         builder.setTitle("Select Model")
                 .setItems(models, (dialog, which) -> {
@@ -242,8 +243,8 @@ public class FilterDialogFragment extends DialogFragment {
     }
     
     private void showBrandSelectionDialog() {
-        final String[] brands = {"Toyota", "Honda", "Ford", "BMW", "Mercedes", "Audi", "Nissan", "Mazda", "Hyundai", "Kia"};
-        
+        final String[] brands = {"Toyota", "BMW", "Mercedes", "Audi", "Nissan", "Mazda", "Hyundai", "Kia", "Porsche", "Lamborghini"};
+        // load tu api
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
         builder.setTitle("Select Brand")
                 .setItems(brands, (dialog, which) -> {
@@ -256,8 +257,8 @@ public class FilterDialogFragment extends DialogFragment {
     }
     
     private void showLocationSelectionDialog() {
-        final String[] locations = {"New York", "Los Angeles", "Chicago", "Houston", "Phoenix", "Philadelphia", "San Antonio", "San Diego", "Dallas", "San Jose"};
-        
+        final String[] locations = {"HCM"};
+        // load tu api
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(requireContext());
         builder.setTitle("Select Location")
                 .setItems(locations, (dialog, which) -> {
@@ -275,7 +276,7 @@ public class FilterDialogFragment extends DialogFragment {
         
         // Remove the currency symbol to just keep "Rs."
         String formattedMin = "Fee: " + String.format(Locale.getDefault(), "%,.0f", min);
-        String formattedMax = "Fee: " + String.format(Locale.getDefault(), "%,.2f", max);
+        String formattedMax = "Fee: " + String.format(Locale.getDefault(), "%,.2f", max) + "/day";
         
         priceRangeValue.setText(formattedMin + " - " + formattedMax);
     }

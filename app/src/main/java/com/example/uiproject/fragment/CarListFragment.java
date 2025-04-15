@@ -27,8 +27,10 @@ import com.example.uiproject.entity.CarDTO;
 import com.example.uiproject.model.Car;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,12 +47,14 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
     CarBrandDTO brand;
     private ApiService apiService;
 
+    Map<String,Object> params = new HashMap<>();
+
     // Filter parameters
-    private String currentModel = "";
+    private String currentLine = "";
     private String currentBrand = "";
     private String currentLocation = "";
-    private float currentMinPrice = 0;
-    private float currentMaxPrice = 3000000;
+    private Long currentMinPrice = 0L;
+    private Long currentMaxPrice = 30000000L;
 
 
     public CarListFragment() {
@@ -175,9 +179,9 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
     @Override
     public void onCarClick(int position) {
         CarDTO car = carList.get(position);
-//        // Show car details dialog
-//        CarDetailsDialog detailsDialog = CarDetailsDialog.newInstance(car);
-//        detailsDialog.show(getParentFragmentManager(), "CarDetailsDialog");
+        // Show car details dialog
+        CarDetailsDialog detailsDialog = CarDetailsDialog.newInstance(car);
+        detailsDialog.show(getParentFragmentManager(), "car_detail");
     }
 
     @Override
@@ -192,15 +196,51 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
     }
 
     @Override
-    public void onFilterApplied(String model, String brand, String location, float minPrice, float maxPrice) {
+    public void onFilterApplied(String model, String brand, String location, Long minPrice, Long maxPrice) {
         // Save current filter parameters
-        this.currentModel = model;
+        this.currentLine = model;
         this.currentBrand = brand;
         this.currentLocation = location;
         this.currentMinPrice = minPrice;
         this.currentMaxPrice = maxPrice;
+
+        if(currentBrand != null && !currentBrand.equals("")){
+            recommendedTextView.setText(currentBrand);
+        }
+        else{
+            recommendedTextView.setText("ALL CAR");
+        }
+
+        params.clear();
+        params.put("line",currentLine);
+        params.put("brand",currentBrand);
+        params.put("location",currentLocation);
+        params.put("carPriceFrom",currentMinPrice);
+        params.put("carPriceTo",currentMaxPrice);
+
+
+        apiService.findCar(params).enqueue(new Callback<List<CarDTO>>() {
+            @Override
+            public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    updateCarList(response.body());
+                    Log.e("API_RESPONSE", "Số lượng xe sau khi tim kiem: " + carList.size());
+                    Toast.makeText(requireContext(), "Finded", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CarDTO>> call, Throwable t) {
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e("HomeFragment", "Activity is not attached");
+                }
+            }
+        });
+
         
-        Toast.makeText(getContext(),"OK",Toast.LENGTH_LONG).show();
+
     }
     
 

@@ -16,6 +16,7 @@
     import retrofit2.http.Part;
     import retrofit2.http.Path;
     import retrofit2.http.Query;
+    import retrofit2.http.QueryMap;
 
     public interface ApiService {
 
@@ -43,5 +44,7 @@
         Call<List<CarDTO>> getNewCar ();
         @GET("/api/car/sale")
         Call<List<CarDTO>> getSaleCar ();
+        @GET("/api/car/findCar")
+        Call<List<CarDTO>> findCar (@QueryMap Map<String, Object> params);
 
     }

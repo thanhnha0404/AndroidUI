@@ -13,9 +13,35 @@ public class CarDTO {
     private List<String> pictures;
     private Long price;
     private String discount;
+    private String line;
+    private String brand;
+    private String location;
     private boolean isSelected;
     private boolean isFavorite;
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
     public boolean isFavorite() {
         return isFavorite;

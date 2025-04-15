@@ -22,17 +22,36 @@
             android:src="@drawable/car_background"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Name TextView với giới hạn chiều rộng -->
         <TextView
             android:id="@+id/tv_vehicle_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
-            android:text="Red Mazda 6 - Elite Estate"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Name"
             android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/tv_vehicle_sale"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_vehicle" />
+
+        <!-- Sale TextView cố định bên phải -->
+        <TextView
+            android:id="@+id/tv_vehicle_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Sale"
+            android:textColor="@color/red"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_vehicle" />
 
         <View
@@ -44,7 +63,8 @@
             android:background="#0066CC"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_vehicle_name" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</com.google.android.material.card.MaterialCardView> 
+</com.google.android.material.card.MaterialCardView>

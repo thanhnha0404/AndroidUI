@@ -17,7 +17,7 @@ import com.example.uiproject.model.Car;
 
 import java.util.List;
 
-public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
+public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>  {
 
     private List<CarDTO> carList;
     private OnCarClickListener listener;

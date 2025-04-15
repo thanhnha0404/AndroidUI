@@ -38,7 +38,7 @@ dependencies {
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation("androidx.cardview:cardview:1.0.0")
-    implementation("com.google.android.material:material:1.5.0")
+    implementation("com.google.android.material:material:1.9.0")
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("com.cloudinary:cloudinary-android:2.2.0")
 
