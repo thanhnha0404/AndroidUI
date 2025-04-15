@@ -1,11 +1,13 @@
     package com.example.uiproject.api;
 
+
+    import com.example.uiproject.admin.model.AddCarRequest;
+    import com.example.uiproject.admin.model.Brand;
+    import com.example.uiproject.admin.model.Line;
     import com.example.uiproject.entity.CarBrandDTO;
     import com.example.uiproject.entity.CarDTO;
-
     import java.util.List;
     import java.util.Map;
-
     import okhttp3.MultipartBody;
     import okhttp3.ResponseBody;
     import retrofit2.Call;
@@ -17,6 +19,7 @@
     import retrofit2.http.Path;
     import retrofit2.http.Query;
     import retrofit2.http.QueryMap;
+
 
     public interface ApiService {
 
@@ -38,13 +41,29 @@
 
         @GET("/api/car/brand/{idBrand}")
         Call<List<CarDTO>> getAllCarOfBrand (@Path("idBrand") Long idBrand);
+      
         @GET("/api/car")
         Call<List<CarDTO>> getAllCar ();
+      
         @GET("/api/car/new")
         Call<List<CarDTO>> getNewCar ();
+      
         @GET("/api/car/sale")
         Call<List<CarDTO>> getSaleCar ();
+      
+        @GET("api/carbrand")
+        Call<List<Brand>> getAllBrands();
+      
+        @GET("api/carline")
+        Call<List<Line>> getAllLines();
+      
+        @Multipart
+        @POST("/api/upload/multiple")
+        Call<List<String>> uploadMultipleImages(@Part List<MultipartBody.Part> images);
+      
+        @POST("/api/car/insertCar")
+        Call<Void> createCar(@Body AddCarRequest car);
+      
         @GET("/api/car/findCar")
         Call<List<CarDTO>> findCar (@QueryMap Map<String, Object> params);
-
     }
