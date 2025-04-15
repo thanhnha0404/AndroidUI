@@ -193,6 +193,7 @@
                     android:src="@android:drawable/ic_menu_call" />
 
                 <TextView
+                    android:id="@+id/carType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -215,6 +216,7 @@
                     android:src="@android:drawable/ic_menu_info_details" />
 
                 <TextView
+                    android:id="@+id/carBrand"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -237,6 +239,7 @@
                     android:src="@drawable/ic_location" />
 
                 <TextView
+                    android:id="@+id/carAdd"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"

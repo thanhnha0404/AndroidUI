@@ -17,25 +17,30 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.bumptech.glide.Glide;
 import com.example.uiproject.R;
+import com.example.uiproject.entity.CarDTO;
 import com.example.uiproject.model.Car;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CarDetailsDialog extends DialogFragment {
 
-    private Car car;
+    private CarDTO car;
     private ImageView mainCarImage, thumbnail1, thumbnail2;
-    private TextView carNameTextView, priceTextView, descriptionTextView, ratingTextView;
+    private TextView carNameTextView, priceTextView, descriptionTextView, ratingTextView, carLine, carBrand, carAdd;
     private ImageButton favoriteButton, backButton, shareButton;
     private MaterialButton bookButton;
     private View contactDealerButton, carDetailsButton, locationButton;
     
     // Sample images for demonstration
-    private int[] carImages = {R.drawable.mazda6}; // Add more images as needed
+    private List carImages = new ArrayList<>(); // Add more images as needed
     private int currentImageIndex = 0;
     private boolean isFavorite = false;
 
-    public static CarDetailsDialog newInstance(Car car) {
+    public static CarDetailsDialog newInstance(CarDTO car) {
         CarDetailsDialog dialog = new CarDetailsDialog();
         dialog.car = car;
         return dialog;
@@ -72,22 +77,33 @@ public class CarDetailsDialog extends DialogFragment {
         contactDealerButton = view.findViewById(R.id.contactDealerButton);
         carDetailsButton = view.findViewById(R.id.carDetailsButton);
         locationButton = view.findViewById(R.id.locationButton);
+        carLine = view.findViewById(R.id.carType);
+        carBrand = view.findViewById(R.id.carBrand);
+        carAdd = view.findViewById(R.id.carAdd);
 
         // Populate data from car object
         if (car != null) {
             carNameTextView.setText(car.getName());
-            priceTextView.setText(car.getPrice());
+            priceTextView.setText(car.getPrice().toString() + "/day");
+            carLine.setText(car.getLine());
+            carBrand.setText(car.getBrand());
+            carAdd.setText(car.getLocation());
             
             // Set a default description for demonstration
-            descriptionTextView.setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-                    "Nulla facilisi. Mauris interdum mi nisi. Ut vestibulum placerat facilisis interdum mi nibh.");
+            descriptionTextView.setText(car.getDescription());
             
             ratingTextView.setText("4.5/5"); // Example rating
-            
-            // Set initial image
-            mainCarImage.setImageResource(car.getImageResource());
-            thumbnail1.setImageResource(car.getImageResource());
-            thumbnail2.setImageResource(car.getImageResource());
+
+            carImages = car.getPictures();
+            ImageView[] imageViews = {mainCarImage, thumbnail1, thumbnail2};
+
+            for (int i = 0; i < 3 && i < carImages.size(); i++) {
+                Glide.with(requireContext())
+                        .load(car.getPictures().get(i))
+                        .placeholder(R.drawable.car_background)
+                        .error(R.drawable.car_background)
+                        .into(imageViews[i]);
+            }
         }
 
         // Set up click listeners
@@ -116,20 +132,36 @@ public class CarDetailsDialog extends DialogFragment {
         // Main image click cycles through available images
         mainCarImage.setOnClickListener(v -> {
             // Cycle to next image if multiple images are available
-            if (carImages.length > 1) {
-                currentImageIndex = (currentImageIndex + 1) % carImages.length;
-                mainCarImage.setImageResource(carImages[currentImageIndex]);
+            if (carImages.size() > 1) {
+                currentImageIndex = (currentImageIndex + 1) % carImages.size();
+                Glide.with(requireContext())
+                        .load(carImages.get(currentImageIndex))         // hoặc brand.getLogo() nếu là URL ảnh
+                        .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
+                        .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
+                        .into(mainCarImage);
             }
         });
 
         // Thumbnail clicks change the main image
         thumbnail1.setOnClickListener(v -> {
-            mainCarImage.setImageResource(car.getImageResource());
+            if (carImages.size() >= 2){
+                Glide.with(requireContext())
+                        .load(carImages.get(1))         // hoặc brand.getLogo() nếu là URL ảnh
+                        .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
+                        .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
+                        .into(mainCarImage);
+            }
+
         });
 
         thumbnail2.setOnClickListener(v -> {
-            // If you have additional images, set them here
-            mainCarImage.setImageResource(car.getImageResource());
+            if (carImages.size() >= 3){
+                Glide.with(requireContext())
+                        .load(carImages.get(2))         // hoặc brand.getLogo() nếu là URL ảnh
+                        .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
+                        .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
+                        .into(mainCarImage);
+            }
         });
 
         // Book button
