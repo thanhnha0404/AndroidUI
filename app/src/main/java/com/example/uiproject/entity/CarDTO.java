@@ -1,39 +1,99 @@
 package com.example.uiproject.entity;
 
 import java.util.Date;
+import java.util.List;
 
 public class CarDTO {
-    private int id;
+
+    private Long id;
     private Date dateOfStart;
     private String description;
     private String identify;
     private String name;
-    private String picture;
-    private int price;
+    private List<String> pictures;
+    private Long price;
+    private String discount;
+    private String line;
+    private String brand;
+    private String location;
     private boolean isSelected;
+    private boolean isFavorite;
 
-    public int getId() {
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getLine() {
+        return line;
+    }
+
+    public void setLine(String line) {
+        this.line = line;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
+
+    public boolean isFavorite() {
+        return isFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        isFavorite = favorite;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+    public void setSelected(boolean selected) {
+        isSelected = selected;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
+
     public Date getDateOfStart() {
         return dateOfStart;
     }
+
     public void setDateOfStart(Date dateOfStart) {
         this.dateOfStart = dateOfStart;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getIdentify() {
         return identify;
     }
+
     public void setIdentify(String identify) {
         this.identify = identify;
     }
@@ -46,26 +106,21 @@ public class CarDTO {
         this.name = name;
     }
 
-    public String getPicture() {
-        return picture;
+    public List<String> getPictures() {
+        return pictures;
     }
 
-    public void setPicture(String picture) {
-        this.picture = picture;
+    public void setPictures(List<String> pictures) {
+        this.pictures = pictures;
     }
 
-    public int getPrice() {
+    public Long getPrice() {
         return price;
     }
-    public void setPrice(int price) {
+
+    public void setPrice(Long price) {
         this.price = price;
     }
 
-    public boolean isSelected() {
-        return isSelected;
-    }
 
-    public void setSelected(boolean selected) {
-        isSelected = selected;
-    }
 }

@@ -1,11 +1,13 @@
 package com.example.uiproject.fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,30 +16,46 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.uiproject.api.ApiService;
+import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.dialog.CarDetailsDialog;
 import com.example.uiproject.dialog.FilterDialogFragment;
 import com.example.uiproject.R;
 import com.example.uiproject.adapter.CarAdapter;
+import com.example.uiproject.entity.CarBrandDTO;
+import com.example.uiproject.entity.CarDTO;
 import com.example.uiproject.model.Car;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CarListFragment extends Fragment implements CarAdapter.OnCarClickListener, FilterDialogFragment.FilterDialogListener {
 
     private RecyclerView carsRecyclerView;
     private CarAdapter carAdapter;
-    private List<Car> carList;
+    private List<CarDTO> carList;
     private EditText searchEditText;
     private ImageButton filterButton;
+    private TextView recommendedTextView;
+    CarBrandDTO brand;
+    private ApiService apiService;
+
+    Map<String,Object> params = new HashMap<>();
 
     // Filter parameters
-    private String currentModel = "";
+    private String currentLine = "";
     private String currentBrand = "";
     private String currentLocation = "";
-    private float currentMinPrice = 0;
-    private float currentMaxPrice = 3000000;
+    private Long currentMinPrice = 0L;
+    private Long currentMaxPrice = 30000000L;
+
 
     public CarListFragment() {
         // Required empty public constructor
@@ -59,9 +77,19 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
         super.onViewCreated(view, savedInstanceState);
 
         // Initialize views
+        brand = getArguments() != null ? (CarBrandDTO) getArguments().getSerializable("brand") : null;
         carsRecyclerView = view.findViewById(R.id.carsRecyclerView);
         searchEditText = view.findViewById(R.id.searchEditText);
         filterButton = view.findViewById(R.id.filterButton);
+        recommendedTextView = view.findViewById(R.id.recommendedTextView);
+        apiService = RetrofitClient.getInstance().create(ApiService.class);
+
+        if (brand != null){
+            recommendedTextView.setText(brand.getName());
+        }
+        else {
+            recommendedTextView.setText("All Car");
+        }
 
         // Set up filter button click listener
         filterButton.setOnClickListener(v -> {
@@ -71,9 +99,43 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
 
         // Set up RecyclerView
         setupRecyclerView();
-        
-        // Load sample car data
-        loadSampleCarData();
+
+        if ( brand != null && brand.getId() != null){
+            loadCarOfBrand();
+        }
+        else{
+            loadAllCar();
+        }
+    }
+
+    private void updateCarList(List<CarDTO> newCars) {
+        carList.clear();
+        if (newCars != null) {
+            carList.addAll(newCars);
+        }
+        carAdapter.notifyDataSetChanged();
+    }
+
+
+    private void loadAllCar (){
+         apiService.getAllCar().enqueue(new Callback<List<CarDTO>>() {
+             @Override
+             public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+                 if (response.isSuccessful() && response.body() != null) {
+                     updateCarList(response.body());
+                     Log.e("API_RESPONSE", "Số lượng xe: " + carList.size());
+                 }
+             }
+
+             @Override
+             public void onFailure(Call<List<CarDTO>> call, Throwable t) {
+                 if (getActivity() != null) {
+                     Toast.makeText(getActivity(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                 } else {
+                     Log.e("HomeFragment", "Activity is not attached");
+                 }
+             }
+         });
     }
 
     private void showFilterDialog() {
@@ -92,29 +154,39 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
         carsRecyclerView.setAdapter(carAdapter);
     }
 
-    private void loadSampleCarData() {
+    private void loadCarOfBrand() {
         // Sample car data
-        carList.add(new Car("Audi e-tron Premium", "Rs.63,900/day", R.drawable.mazda6, 340));
-        carList.add(new Car("Suzuki Swift", "Rs.35,000/day", R.drawable.mazda6, 290));
-        carList.add(new Car("Mercedes G-Wagon", "Rs.75,500/day", R.drawable.mazda6, 180));
-        carList.add(new Car("Tesla Model 3", "Rs.16,00,000.00", R.drawable.mazda6, 210));
-        
-        // Notify adapter
-        carAdapter.notifyDataSetChanged();
+       apiService.getAllCarOfBrand(brand.getId()).enqueue(new Callback<List<CarDTO>>() {
+           @Override
+           public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+               if (response.isSuccessful() && response.body() != null) {
+                   updateCarList(response.body());
+                   Log.e("API_RESPONSE", "Số lượng xe cua hang: " + carList.size());
+               }
+           }
+
+           @Override
+           public void onFailure(Call<List<CarDTO>> call, Throwable t) {
+               if (getActivity() != null) {
+                   Toast.makeText(getActivity(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+               } else {
+                   Log.e("HomeFragment", "Activity is not attached");
+               }
+           }
+       });
     }
 
     @Override
     public void onCarClick(int position) {
-        Car car = carList.get(position);
-        
+        CarDTO car = carList.get(position);
         // Show car details dialog
         CarDetailsDialog detailsDialog = CarDetailsDialog.newInstance(car);
-        detailsDialog.show(getParentFragmentManager(), "CarDetailsDialog");
+        detailsDialog.show(getParentFragmentManager(), "car_detail");
     }
 
     @Override
     public void onFavoriteClick(int position) {
-        Car car = carList.get(position);
+        CarDTO car = carList.get(position);
         // Toggle favorite status
         car.setFavorite(!car.isFavorite());
         carAdapter.notifyItemChanged(position);
@@ -124,49 +196,52 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
     }
 
     @Override
-    public void onFilterApplied(String model, String brand, String location, float minPrice, float maxPrice) {
+    public void onFilterApplied(String model, String brand, String location, Long minPrice, Long maxPrice) {
         // Save current filter parameters
-        this.currentModel = model;
+        this.currentLine = model;
         this.currentBrand = brand;
         this.currentLocation = location;
         this.currentMinPrice = minPrice;
         this.currentMaxPrice = maxPrice;
+
+        if(currentBrand != null && !currentBrand.equals("")){
+            recommendedTextView.setText(currentBrand);
+        }
+        else{
+            recommendedTextView.setText("ALL CAR");
+        }
+
+        params.clear();
+        params.put("line",currentLine);
+        params.put("brand",currentBrand);
+        params.put("location",currentLocation);
+        params.put("carPriceFrom",currentMinPrice);
+        params.put("carPriceTo",currentMaxPrice);
+
+
+        apiService.findCar(params).enqueue(new Callback<List<CarDTO>>() {
+            @Override
+            public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    updateCarList(response.body());
+                    Log.e("API_RESPONSE", "Số lượng xe sau khi tim kiem: " + carList.size());
+                    Toast.makeText(requireContext(), "Finded", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CarDTO>> call, Throwable t) {
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e("HomeFragment", "Activity is not attached");
+                }
+            }
+        });
+
         
-        // Apply filters to car list
-        applyFilters();
+
     }
     
-    private void applyFilters() {
-        // In a real app, you would likely query a database or API with these filters
-        // For this example, we'll just filter the existing list based on price
-        
-        List<Car> filteredList = new ArrayList<>();
-        
-        for (Car car : carList) {
-            // Extract numeric price from string like "Rs.63,900/day"
-            String priceStr = car.getPrice().replaceAll("[^\\d.]", "");
-            float price = 0;
-            try {
-                price = Float.parseFloat(priceStr);
-            } catch (NumberFormatException e) {
-                e.printStackTrace();
-            }
-            
-            boolean matchesModel = currentModel.isEmpty() || car.getName().contains(currentModel);
-            boolean matchesBrand = currentBrand.isEmpty() || car.getName().contains(currentBrand);
-            boolean matchesPrice = price >= currentMinPrice && price <= currentMaxPrice;
-            
-            if (matchesModel && matchesBrand && matchesPrice) {
-                filteredList.add(car);
-            }
-        }
-        
-        // Update the adapter with filtered list
-        carAdapter.updateCarList(filteredList);
-        
-        // Show a message with filter results
-        String message = String.format(Locale.getDefault(), 
-                "Found %d cars matching your filters", filteredList.size());
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
-    }
+
 } 

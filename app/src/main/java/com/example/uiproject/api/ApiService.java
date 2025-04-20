@@ -47,10 +47,10 @@
         @GET("/api/car/sale")
         Call<List<CarDTO>> getSaleCar ();
 
-        @GET("/api/carbrand")
+        @GET("api/carbrand")
         Call<List<Brand>> getAllBrands();
 
-        @GET("/api/carline")
+        @GET("api/carline")
         Call<List<Line>> getAllLines();
 
         @Multipart
