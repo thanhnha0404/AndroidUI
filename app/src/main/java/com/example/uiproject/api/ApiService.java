@@ -3,33 +3,30 @@
     import com.example.uiproject.admin.model.AddCarRequest;
     import com.example.uiproject.admin.model.Brand;
     import com.example.uiproject.admin.model.Line;
-    import com.example.uiproject.admin.model.ResultDTO;
+    import com.example.uiproject.admin.model.ResultDTO2;
     import com.example.uiproject.admin.model.UserRequest;
     import com.example.uiproject.entity.CarBrandDTO;
     import com.example.uiproject.entity.CarDTO;
     import com.example.uiproject.entity.BookingRequest;
-    import com.example.uiproject.entity.CarBrandDTO;
-    import com.example.uiproject.entity.CarDTO;
     import com.example.uiproject.entity.CustomerDTO;
     import com.example.uiproject.entity.GGLoginRequest;
     import com.example.uiproject.entity.PaymentResDTO;
     import com.example.uiproject.entity.ResultDTO;
     import com.example.uiproject.entity.updateProfileRequest;
-    import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
+
     import java.util.List;
     import java.util.Map;
     import okhttp3.MultipartBody;
-    import okhttp3.Response;
-    import okhttp3.ResponseBody;
     import retrofit2.Call;
     import retrofit2.http.Body;
     import retrofit2.http.GET;
-    import retrofit2.http.Header;
     import retrofit2.http.HeaderMap;
     import retrofit2.http.Multipart;
     import retrofit2.http.POST;
     import retrofit2.http.Part;
     import retrofit2.http.Path;
+    import retrofit2.http.Query;
+    import retrofit2.http.QueryMap;
 
     public interface ApiService {
 
@@ -49,10 +46,10 @@
         Call<Object> resetPass (@Body Map<String,String> resetRequest);
 
         @POST("/api/auth/register")
-        Call<ResultDTO> register(@Body UserRequest userRequest);
+        Call<ResultDTO2> register(@Body UserRequest userRequest);
 
         @POST("/api/auth/verify-otp")
-        Call<ResultDTO> verifyOtp(@Body UserRequest userRequest);
+        Call<ResultDTO2> verifyOtp(@Body UserRequest userRequest);
 
         @GET("/api/carbrand")
         Call<List<CarBrandDTO>> getAllCarBrandActive ();

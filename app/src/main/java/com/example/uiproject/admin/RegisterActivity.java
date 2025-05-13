@@ -13,20 +13,18 @@ import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.uiproject.R;
-import com.example.uiproject.admin.model.ResultDTO;
+import com.example.uiproject.admin.model.ResultDTO2;
 import com.example.uiproject.admin.model.UserRequest;
 import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
@@ -394,14 +392,14 @@ public class RegisterActivity extends AppCompatActivity {
         UserRequest userRequest = createUserRequest();
 
         // Call API to request OTP
-        apiService.register(userRequest).enqueue(new Callback<ResultDTO>() {
+        apiService.register(userRequest).enqueue(new Callback<ResultDTO2>() {
             @Override
-            public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
+            public void onResponse(Call<ResultDTO2> call, Response<ResultDTO2> response) {
                 registerButton.setEnabled(true);
                 registerButton.setText("Receive OTP");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    ResultDTO result = response.body();
+                    ResultDTO2 result = response.body();
                     if (result.isStatus()) {
                         // OTP sent successfully, navigate to OTP verification screen
                         navigateToOtpVerification(userRequest);
@@ -416,7 +414,7 @@ public class RegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResultDTO> call, Throwable t) {
+            public void onFailure(Call<ResultDTO2> call, Throwable t) {
                 registerButton.setEnabled(true);
                 registerButton.setText("Receive OTP");
                 Log.e(TAG, "API call failed", t);

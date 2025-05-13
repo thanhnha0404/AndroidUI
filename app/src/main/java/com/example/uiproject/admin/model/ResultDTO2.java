@@ -1,14 +1,14 @@
 package com.example.uiproject.admin.model;
 
-public class ResultDTO<T> {
+public class ResultDTO2<T> {
     private boolean status;
     private String message;
     private T data;
 
-    public ResultDTO() {
+    public ResultDTO2() {
     }
 
-    public ResultDTO(boolean status, String message, T data) {
+    public ResultDTO2(boolean status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;

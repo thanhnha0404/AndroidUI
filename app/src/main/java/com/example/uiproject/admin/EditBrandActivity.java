@@ -30,7 +30,7 @@ import com.example.uiproject.R;
 import com.example.uiproject.admin.api.ApiServiceAdmin;
 import com.example.uiproject.admin.api.RetrofitClientAdmin;
 import com.example.uiproject.admin.model.Brand;
-import com.example.uiproject.admin.model.ResultDTO;
+import com.example.uiproject.admin.model.ResultDTO2;
 import com.google.gson.Gson;
 
 import java.io.IOException;
@@ -309,9 +309,9 @@ public class EditBrandActivity extends AppCompatActivity {
         uploadProgressBar.setVisibility(View.VISIBLE);
         
         // Submit to API
-        apiServiceAdmin.updateBrand(brand).enqueue(new Callback<ResultDTO<Brand>>() {
+        apiServiceAdmin.updateBrand(brand).enqueue(new Callback<ResultDTO2<Brand>>() {
             @Override
-            public void onResponse(Call<ResultDTO<Brand>> call, Response<ResultDTO<Brand>> response) {
+            public void onResponse(Call<ResultDTO2<Brand>> call, Response<ResultDTO2<Brand>> response) {
                 uploadProgressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
                     Toast.makeText(EditBrandActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -323,7 +323,7 @@ public class EditBrandActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResultDTO<Brand>> call, Throwable t) {
+            public void onFailure(Call<ResultDTO2<Brand>> call, Throwable t) {
                 uploadProgressBar.setVisibility(View.GONE);
                 Toast.makeText(EditBrandActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
@@ -347,9 +347,9 @@ public class EditBrandActivity extends AppCompatActivity {
     private void deleteBrand() {
         uploadProgressBar.setVisibility(View.VISIBLE);
         
-        apiServiceAdmin.deleteBrand(brand.getId()).enqueue(new Callback<ResultDTO<Brand>>() {
+        apiServiceAdmin.deleteBrand(brand.getId()).enqueue(new Callback<ResultDTO2<Brand>>() {
             @Override
-            public void onResponse(Call<ResultDTO<Brand>> call, Response<ResultDTO<Brand>> response) {
+            public void onResponse(Call<ResultDTO2<Brand>> call, Response<ResultDTO2<Brand>> response) {
                 uploadProgressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null && response.body().isStatus()) {
                     Toast.makeText(EditBrandActivity.this, response.body().getMessage(), Toast.LENGTH_SHORT).show();
@@ -361,7 +361,7 @@ public class EditBrandActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResultDTO<Brand>> call, Throwable t) {
+            public void onFailure(Call<ResultDTO2<Brand>> call, Throwable t) {
                 uploadProgressBar.setVisibility(View.GONE);
                 Toast.makeText(EditBrandActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }

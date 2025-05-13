@@ -4,7 +4,7 @@ import com.example.uiproject.admin.model.AddCarRequest;
 import com.example.uiproject.admin.model.Brand;
 import com.example.uiproject.admin.model.CarDTO;
 import com.example.uiproject.admin.model.Line;
-import com.example.uiproject.admin.model.ResultDTO;
+import com.example.uiproject.admin.model.ResultDTO2;
 
 import java.util.List;
 
@@ -24,13 +24,13 @@ public interface ApiServiceAdmin {
     Call<List<Brand>> getAllBrands();
 
     @POST("api/carbrand/insert")
-    Call<ResultDTO<Brand>> addBrand(@Body Brand brand);
+    Call<ResultDTO2<Brand>> addBrand(@Body Brand brand);
 
     @PUT("api/carbrand/update")
-    Call<ResultDTO<Brand>> updateBrand(@Body Brand brand);
+    Call<ResultDTO2<Brand>> updateBrand(@Body Brand brand);
 
     @DELETE("api/carbrand/delete/{id}")
-    Call<ResultDTO<Brand>> deleteBrand(@Path("id") Long id);
+    Call<ResultDTO2<Brand>> deleteBrand(@Path("id") Long id);
     
     @GET("api/carbrand/{id}")
     Call<Brand> getBrandById(@Path("id") Long id);

@@ -1,6 +1,5 @@
 package com.example.uiproject.admin;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.TextUtils;
@@ -13,7 +12,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.uiproject.R;
-import com.example.uiproject.admin.model.ResultDTO;
+import com.example.uiproject.admin.model.ResultDTO2;
 import com.example.uiproject.admin.model.UserRequest;
 import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
@@ -104,14 +103,14 @@ public class OtpVerificationActivity extends AppCompatActivity {
         String otpCode = otpCodeEditText.getText().toString().trim();
         userRequest.setOtp(otpCode); // 👈 thêm dòng này để set otp vào UserRequest
 
-        apiService.verifyOtp(userRequest).enqueue(new Callback<ResultDTO>() {
+        apiService.verifyOtp(userRequest).enqueue(new Callback<ResultDTO2>() {
             @Override
-            public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
+            public void onResponse(Call<ResultDTO2> call, Response<ResultDTO2> response) {
                 verifyButton.setEnabled(true);
                 verifyButton.setText("Verify");
 
                 if (response.isSuccessful() && response.body() != null) {
-                    ResultDTO result = response.body();
+                    ResultDTO2 result = response.body();
                     if (result.isStatus()) {
                         Toast.makeText(OtpVerificationActivity.this, "Registration successful!", Toast.LENGTH_SHORT).show();
                         // navigateToLogin();
@@ -124,7 +123,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResultDTO> call, Throwable t) {
+            public void onFailure(Call<ResultDTO2> call, Throwable t) {
                 verifyButton.setEnabled(true);
                 verifyButton.setText("Verify");
                 Log.e(TAG, "API call failed", t);
@@ -140,11 +139,11 @@ public class OtpVerificationActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Resending OTP...", Toast.LENGTH_SHORT).show();
 
-        apiService.register(userRequest).enqueue(new Callback<ResultDTO>() {
+        apiService.register(userRequest).enqueue(new Callback<ResultDTO2>() {
             @Override
-            public void onResponse(Call<ResultDTO> call, Response<ResultDTO> response) {
+            public void onResponse(Call<ResultDTO2> call, Response<ResultDTO2> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ResultDTO result = response.body();
+                    ResultDTO2 result = response.body();
                     if (result.isStatus()) {
                         Toast.makeText(OtpVerificationActivity.this, "OTP sent successfully", Toast.LENGTH_SHORT).show();
                         startOtpTimer();
@@ -159,7 +158,7 @@ public class OtpVerificationActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ResultDTO> call, Throwable t) {
+            public void onFailure(Call<ResultDTO2> call, Throwable t) {
                 Log.e(TAG, "API call failed", t);
                 Toast.makeText(OtpVerificationActivity.this, "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 enableResendOtp();

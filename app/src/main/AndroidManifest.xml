@@ -29,7 +29,7 @@
         tools:replace="android:fullBackupContent">
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".admin.AdminActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,9 +43,9 @@
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
-        <activity
-            android:name=".admin.AdminActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".admin.AdminActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".admin.CarManagerActivity"
             android:exported="false" />
@@ -69,6 +69,8 @@
             android:exported="false" />
         <activity
             android:name=".admin.EditBrandActivity"
+            android:exported="false" />
+        <activity
             android:name=".ForgotActivity"
             android:exported="false" />
         <activity
