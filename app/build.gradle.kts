@@ -72,7 +72,14 @@ dependencies {
     // Add the dependencies for any other desired Firebase products
     // https://firebase.google.com/docs/android/setup#available-libraries
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
-    
+
+    implementation ("androidx.core:core:1.12.0")
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
+
+    implementation ("com.google.android.gms:play-services-auth:21.3.0")
+
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)

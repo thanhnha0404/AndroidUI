@@ -12,16 +12,17 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.bumptech.glide.Glide;
 import com.example.uiproject.R;
+import com.example.uiproject.entity.AddressDTO;
 import com.example.uiproject.entity.CarDTO;
+import com.example.uiproject.fragment.BookingFragment;
+import com.example.uiproject.model.Car;
 import com.google.android.material.button.MaterialButton;
-
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,11 +84,18 @@ public class CarDetailsDialog extends DialogFragment {
         // Populate data from car object
         if (car != null) {
             carNameTextView.setText(car.getName());
-            priceTextView.setText(car.getPrice().toString() + "/day");
+            NumberFormat numberFormat = NumberFormat.getInstance();
+            numberFormat.setGroupingUsed(true);  // Bật tính năng ngắt nhóm số
+            String formattedPrice = numberFormat.format(car.getPrice());
+            priceTextView.setText(formattedPrice + "/day");
+
             carLine.setText(car.getLine());
             carBrand.setText(car.getBrand());
-            carAdd.setText(car.getLocation());
-            
+
+            AddressDTO addressDTO = car.getAddressDTO();
+
+            carAdd.setText(addressDTO.getDistrict());
+
             // Set a default description for demonstration
             descriptionTextView.setText(car.getDescription());
             
@@ -166,16 +174,19 @@ public class CarDetailsDialog extends DialogFragment {
         // Book button
         bookButton.setOnClickListener(v -> {
             Toast.makeText(requireContext(), "Booking " + car.getName(), Toast.LENGTH_SHORT).show();
+            BookingFragment bookingFragment = new BookingFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("carDTO",car);
+            bookingFragment.setArguments(bundle);
+
+            requireActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, bookingFragment) // container trong activity
+                    .addToBackStack(null) // Thêm vào back stack để quay lại được
+                    .commit();
+
             dismiss();
-        });
-
-        // Bottom action buttons
-        contactDealerButton.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Contacting dealer", Toast.LENGTH_SHORT).show();
-        });
-
-        carDetailsButton.setOnClickListener(v -> {
-            Toast.makeText(requireContext(), "Viewing car details", Toast.LENGTH_SHORT).show();
         });
 
         locationButton.setOnClickListener(v -> {

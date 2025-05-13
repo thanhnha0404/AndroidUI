@@ -22,6 +22,9 @@ import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.dialog.CarDetailsDialog;
 import com.example.uiproject.dialog.FilterDialogFragment;
+import com.example.uiproject.R;
+import com.example.uiproject.adapter.CarAdapter;
+import com.example.uiproject.dialog.SearchResultDialog;
 import com.example.uiproject.entity.CarBrandDTO;
 import com.example.uiproject.entity.CarDTO;
 
@@ -217,28 +220,30 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
         params.put("carPriceTo",currentMaxPrice);
 
 
-//        apiService.findCar(params).enqueue(new Callback<List<CarDTO>>() {
-//            @Override
-//            public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    updateCarList(response.body());
-//                    Log.e("API_RESPONSE", "Số lượng xe sau khi tim kiem: " + carList.size());
-//                    Toast.makeText(requireContext(), "Finded", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<CarDTO>> call, Throwable t) {
-//                if (getActivity() != null) {
-//                    Toast.makeText(getActivity(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Log.e("HomeFragment", "Activity is not attached");
-//                }
-//            }
-//        });
+        apiService.findCar(params).enqueue(new Callback<List<CarDTO>>() {
+            @Override
+            public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    updateCarList(response.body());
+                    Log.e("API_RESPONSE", "Số lượng xe sau khi tim kiem: " + carList.size());
+                    String message = "Đã tìm thấy xe thỏa mãn";
+                    if (carList.size() ==  0){
+                        message = "Không tìm thấy xe thỏa mãn";
+                    }
+                    SearchResultDialog dialog = new SearchResultDialog(requireContext());
+                    dialog.showResult(message, carList.size());
+                }
+            }
 
-        
-
+            @Override
+            public void onFailure(Call<List<CarDTO>> call, Throwable t) {
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e("HomeFragment", "Activity is not attached");
+                }
+            }
+        });
     }
     
 

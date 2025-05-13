@@ -25,6 +25,7 @@ import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.dialog.CarDetailsDialog;
 import com.example.uiproject.entity.CarBrandDTO;
 import com.example.uiproject.entity.CarDTO;
+import com.example.uiproject.entity.CustomerDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,7 @@ public class HomeFragment extends Fragment {
     private ImageButton headerNotification, headerProfile;
     TextView seeAll1;
     TextView seeAll2;
+    CustomerDTO customer;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -58,7 +60,11 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                            Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        
+
+        if (getArguments() != null){
+            customer = (CustomerDTO) getArguments().getSerializable("customer");
+        }
+
         // Initialize UI components
         initUI(view);
         

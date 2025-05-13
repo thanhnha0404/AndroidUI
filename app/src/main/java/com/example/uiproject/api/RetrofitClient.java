@@ -26,9 +26,10 @@ public class RetrofitClient {
             Gson gson = new GsonBuilder()
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
                     .create();
+
             // Cấu hình Retrofit với OkHttpClient
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.9:8081") // Địa chỉ server
+                    .baseUrl("https://dab7-14-186-91-73.ngrok-free.app/") // Địa chỉ server
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson)) // Sử dụng Gson để chuyển đổi JSON
                     .build();

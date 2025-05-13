@@ -193,9 +193,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/priceRangeValue"
             app:thumbColor="#FF5722"
-            app:thumbRadius="10dp"
+            app:thumbRadius="12dp"
             app:trackColorActive="#FF5722"
-            app:trackColorInactive="#E0E0E0" />
+            app:trackColorInactive="#E0E0E0"
+            app:trackHeight="2dp"
+            app:labelBehavior="gone"
+            app:tickVisible="false" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/searchButton"
