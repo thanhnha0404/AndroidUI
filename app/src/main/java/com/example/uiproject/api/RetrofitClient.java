@@ -1,5 +1,8 @@
 package com.example.uiproject.api;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
@@ -20,11 +23,15 @@ public class RetrofitClient {
                     .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))  // Hiển thị headers và body khi debug
                     .build();
 
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd") // ⭐ Cấu hình định dạng ngày
+                    .create();
+
             // Cấu hình Retrofit với OkHttpClient
             retrofit = new Retrofit.Builder()
-                    .baseUrl("https://6876-14-169-61-70.ngrok-free.app/") // Địa chỉ server
+                    .baseUrl("https://dab7-14-186-91-73.ngrok-free.app/") // Địa chỉ server
                     .client(okHttpClient)
-                    .addConverterFactory(GsonConverterFactory.create()) // Sử dụng Gson để chuyển đổi JSON
+                    .addConverterFactory(GsonConverterFactory.create(gson)) // Sử dụng Gson để chuyển đổi JSON
                     .build();
         }
         return retrofit;

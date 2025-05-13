@@ -15,6 +15,7 @@ import com.example.uiproject.R;
 import com.example.uiproject.entity.CarDTO;
 import com.example.uiproject.model.Car;
 
+import java.text.NumberFormat;
 import java.util.List;
 
 public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>  {
@@ -44,7 +45,12 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>  
         CarDTO car = carList.get(position);
 
         holder.carNameTextView.setText(car.getName());
-        holder.priceTextView.setText("Fee: " +  car.getPrice().toString() + "/day");
+
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setGroupingUsed(true);  // Bật tính năng ngắt nhóm số
+        String formattedPrice = numberFormat.format(car.getPrice());
+
+        holder.priceTextView.setText("Fee: " +  formattedPrice  + "/day");
         // Load ảnh bằng Glide
         Glide.with(holder.itemView.getContext())
                 .load(car.getPictures().get(0))         // hoặc brand.getLogo() nếu là URL ảnh

@@ -1,9 +1,10 @@
 package com.example.uiproject.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class CarDTO {
+public class CarDTO  implements Serializable {
 
     private Long id;
     private Date dateOfStart;
@@ -15,17 +16,19 @@ public class CarDTO {
     private String discount;
     private String line;
     private String brand;
-    private String location;
     private boolean isSelected;
     private boolean isFavorite;
 
-    public String getLocation() {
-        return location;
+    private AddressDTO addressDTO;
+
+    public AddressDTO getAddressDTO() {
+        return addressDTO;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setAddressDTO(AddressDTO addressDTO) {
+        this.addressDTO = addressDTO;
     }
+
 
     public String getLine() {
         return line;

@@ -22,6 +22,7 @@ import com.example.uiproject.dialog.CarDetailsDialog;
 import com.example.uiproject.dialog.FilterDialogFragment;
 import com.example.uiproject.R;
 import com.example.uiproject.adapter.CarAdapter;
+import com.example.uiproject.dialog.SearchResultDialog;
 import com.example.uiproject.entity.CarBrandDTO;
 import com.example.uiproject.entity.CarDTO;
 import com.example.uiproject.model.Car;
@@ -225,7 +226,12 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
                 if (response.isSuccessful() && response.body() != null) {
                     updateCarList(response.body());
                     Log.e("API_RESPONSE", "Số lượng xe sau khi tim kiem: " + carList.size());
-                    Toast.makeText(requireContext(), "Finded", Toast.LENGTH_SHORT).show();
+                    String message = "Đã tìm thấy xe thỏa mãn";
+                    if (carList.size() ==  0){
+                        message = "Không tìm thấy xe thỏa mãn";
+                    }
+                    SearchResultDialog dialog = new SearchResultDialog(requireContext());
+                    dialog.showResult(message, carList.size());
                 }
             }
 
