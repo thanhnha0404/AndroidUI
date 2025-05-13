@@ -3,6 +3,7 @@ package com.example.uiproject;
 import android.app.Application;
 
 
+import com.cloudinary.android.MediaManager;
 
 import java.util.HashMap;
 import java.util.Map;

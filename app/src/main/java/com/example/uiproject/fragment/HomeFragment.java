@@ -17,7 +17,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.uiproject.R;
 import com.example.uiproject.adapter.BrandAdapter;
 import com.example.uiproject.adapter.VehicleAdapter;
@@ -29,7 +28,6 @@ import com.example.uiproject.entity.CarDTO;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;

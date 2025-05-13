@@ -3,6 +3,8 @@
     import com.example.uiproject.admin.model.AddCarRequest;
     import com.example.uiproject.admin.model.Brand;
     import com.example.uiproject.admin.model.Line;
+    import com.example.uiproject.admin.model.ResultDTO;
+    import com.example.uiproject.admin.model.UserRequest;
     import com.example.uiproject.entity.CarBrandDTO;
     import com.example.uiproject.entity.CarDTO;
 
@@ -10,7 +12,6 @@
     import java.util.Map;
 
     import okhttp3.MultipartBody;
-    import okhttp3.ResponseBody;
     import retrofit2.Call;
     import retrofit2.http.Body;
     import retrofit2.http.GET;
@@ -18,7 +19,6 @@
     import retrofit2.http.POST;
     import retrofit2.http.Part;
     import retrofit2.http.Path;
-    import retrofit2.http.Query;
 
     public interface ApiService {
 
@@ -34,6 +34,12 @@
 
         @POST("/api/auth/reset")
         Call<Object> resetPass (@Body Map<String,String> resetRequest);
+
+        @POST("/api/auth/register")
+        Call<ResultDTO> register(@Body UserRequest userRequest);
+
+        @POST("/api/auth/verify-otp")
+        Call<ResultDTO> verifyOtp(@Body UserRequest userRequest);
 
         @GET("/api/carbrand")
         Call<List<CarBrandDTO>> getAllCarBrandActive ();

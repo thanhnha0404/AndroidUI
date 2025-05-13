@@ -20,7 +20,6 @@ import androidx.fragment.app.DialogFragment;
 import com.bumptech.glide.Glide;
 import com.example.uiproject.R;
 import com.example.uiproject.entity.CarDTO;
-import com.example.uiproject.model.Car;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;

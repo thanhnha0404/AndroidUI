@@ -1,5 +1,6 @@
-package com.example.uiproject.api;
+package com.example.uiproject.admin.api;
 
+import com.example.uiproject.api.MyCookieJar;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -9,8 +10,9 @@ import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.converter.scalars.ScalarsConverterFactory;
 
-public class RetrofitClient {
+public class RetrofitClientAdmin {
     private static Retrofit retrofit;
     public static Retrofit getInstance() {
         if (retrofit == null) {
@@ -30,6 +32,7 @@ public class RetrofitClient {
             retrofit = new Retrofit.Builder()
                     .baseUrl("http://192.168.1.9:8081") // Địa chỉ server
                     .client(okHttpClient)
+                    .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(gson)) // Sử dụng Gson để chuyển đổi JSON
                     .build();
         }

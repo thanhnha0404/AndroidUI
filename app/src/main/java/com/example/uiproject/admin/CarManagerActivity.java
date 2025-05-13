@@ -7,15 +7,23 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.uiproject.R;
+import com.example.uiproject.admin.api.ApiServiceAdmin;
+import com.example.uiproject.admin.api.RetrofitClientAdmin;
+import com.example.uiproject.admin.model.CarDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CarManagerActivity extends AppCompatActivity {
 
@@ -23,8 +31,9 @@ public class CarManagerActivity extends AppCompatActivity {
     private CarAdapter carAdapter;
     private EditText searchEditText;
     private Button addButton;
-    private List<Car> carList;
-    private List<Car> filteredCarList;
+    private List<CarDTO> carList;
+    private List<CarDTO> filteredCarList;
+    private ApiServiceAdmin apiServiceAdmin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,14 +47,20 @@ public class CarManagerActivity extends AppCompatActivity {
 
         // Set up RecyclerView
         carsRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        
-        // Initialize car list with sample data
-        initSampleCarData();
-        
+
+        // Initialize lists
+        carList = new ArrayList<>();
+        filteredCarList = new ArrayList<>();
+
         // Initialize adapter
-        filteredCarList = new ArrayList<>(carList);
         carAdapter = new CarAdapter(filteredCarList);
         carsRecyclerView.setAdapter(carAdapter);
+
+        // Initialize API service
+        apiServiceAdmin = RetrofitClientAdmin.getInstance().create(ApiServiceAdmin.class);
+
+        // Fetch cars from API
+        fetchCars();
 
         // Set up search functionality
         searchEditText.addTextChangedListener(new TextWatcher() {
@@ -72,35 +87,49 @@ public class CarManagerActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        // Refresh car list when returning from add car screen
-        // This would typically involve fetching updated data from the database
-    }
+    private void fetchCars() {
+        apiServiceAdmin.getAllCar().enqueue(new Callback<List<CarDTO>>() {
+            @Override
+            public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    carList.clear();
+                    carList.addAll(response.body());
+                    filteredCarList.clear();
+                    filteredCarList.addAll(carList);
+                    carAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(CarManagerActivity.this, "Failed to fetch cars", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-    private void initSampleCarData() {
-        carList = new ArrayList<>();
-        carList.add(new Car("Audi e-tron Premium", "Rs. 54,77,823.73", R.drawable.ic_launcher_background, 360, true));
-        carList.add(new Car("Suzuki Swift", "Rs. 9,95,000", R.drawable.ic_launcher_background, 210, false));
-        carList.add(new Car("Mercedes G-Class", "Rs. 1,35,00,000", R.drawable.ic_launcher_background, 150, true));
-        carList.add(new Car("Hyundai Grand i10", "Rs. 5,99,000", R.drawable.ic_launcher_background, 280, false));
+            @Override
+            public void onFailure(Call<List<CarDTO>> call, Throwable t) {
+                Toast.makeText(CarManagerActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void filterCars(String query) {
         filteredCarList.clear();
-        
+
         if (query.isEmpty()) {
             filteredCarList.addAll(carList);
         } else {
             query = query.toLowerCase();
-            for (Car car : carList) {
+            for (CarDTO car : carList) {
                 if (car.getName().toLowerCase().contains(query)) {
                     filteredCarList.add(car);
                 }
             }
         }
-        
+
         carAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh car list when returning from add car screen
+        fetchCars();
     }
 } 
