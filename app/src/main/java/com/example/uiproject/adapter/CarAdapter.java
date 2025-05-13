@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.uiproject.R;
 import com.example.uiproject.entity.CarDTO;
-import com.example.uiproject.model.Car;
 
 import java.text.NumberFormat;
 import java.util.List;
@@ -78,18 +77,18 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>  
 
         public CarViewHolder(@NonNull View itemView) {
             super(itemView);
-            
+
             carImageView = itemView.findViewById(R.id.carImageView);
             carNameTextView = itemView.findViewById(R.id.carNameTextView);
             priceTextView = itemView.findViewById(R.id.priceTextView);
             favoriteButton = itemView.findViewById(R.id.favoriteButton);
-            
+
             itemView.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     listener.onCarClick(getAdapterPosition());
                 }
             });
-            
+
             favoriteButton.setOnClickListener(v -> {
                 if (listener != null && getAdapterPosition() != RecyclerView.NO_POSITION) {
                     listener.onFavoriteClick(getAdapterPosition());

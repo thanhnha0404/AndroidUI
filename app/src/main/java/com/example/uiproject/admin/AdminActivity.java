@@ -32,7 +32,8 @@ public class AdminActivity extends AppCompatActivity {
         brandManagementOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Navigate to brand management screen
+                Intent intent = new Intent(AdminActivity.this, BrandManagerActivity.class);
+                startActivity(intent);
             }
         });
 

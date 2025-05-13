@@ -12,11 +12,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-
 import com.bumptech.glide.Glide;
 import com.example.uiproject.R;
 import com.example.uiproject.entity.AddressDTO;
@@ -24,7 +22,6 @@ import com.example.uiproject.entity.CarDTO;
 import com.example.uiproject.fragment.BookingFragment;
 import com.example.uiproject.model.Car;
 import com.google.android.material.button.MaterialButton;
-
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;

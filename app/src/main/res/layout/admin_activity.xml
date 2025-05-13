@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     tools:context=".admin.AdminActivity">
 
     <TextView
@@ -11,9 +12,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Admin Dashboard"
-        android:textSize="24sp"
+        android:textSize="26sp"
         android:textStyle="bold"
-        android:layout_marginTop="24dp"
+        android:textColor="#FF9800"
+        android:layout_marginTop="32dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -22,11 +24,9 @@
         android:id="@+id/adminOptionsCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
+        android:layout_margin="20dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="6dp"
         app:layout_constraintTop_toBottomOf="@id/adminTitleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
@@ -34,53 +34,54 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="12dp">
 
             <TextView
                 android:id="@+id/vehicleManagementOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Quản lý xe"
+                android:text="🚗  Quản lý xe"
                 android:textSize="18sp"
+                android:textColor="#212121"
                 android:padding="16dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true"
-                android:drawableEnd="@android:drawable/ic_menu_more" />
+                android:focusable="true" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E0E0E0" />
+                android:background="#FF9800" />
 
             <TextView
                 android:id="@+id/brandManagementOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Quản lý hãng xe"
+                android:text="🏷️  Quản lý hãng xe"
                 android:textSize="18sp"
+                android:textColor="#212121"
                 android:padding="16dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true"
-                android:drawableEnd="@android:drawable/ic_menu_more" />
+                android:focusable="true" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E0E0E0" />
+                android:background="#FF9800" />
 
             <TextView
                 android:id="@+id/contractListOption"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Xem danh sách hợp đồng"
+                android:text="📄  Danh sách hợp đồng"
                 android:textSize="18sp"
+                android:textColor="#212121"
                 android:padding="16dp"
                 android:background="?attr/selectableItemBackground"
                 android:clickable="true"
-                android:focusable="true"
-                android:drawableEnd="@android:drawable/ic_menu_more" />
+                android:focusable="true" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

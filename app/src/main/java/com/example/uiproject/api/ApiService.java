@@ -1,9 +1,12 @@
     package com.example.uiproject.api;
 
-
     import com.example.uiproject.admin.model.AddCarRequest;
     import com.example.uiproject.admin.model.Brand;
     import com.example.uiproject.admin.model.Line;
+    import com.example.uiproject.admin.model.ResultDTO;
+    import com.example.uiproject.admin.model.UserRequest;
+    import com.example.uiproject.entity.CarBrandDTO;
+    import com.example.uiproject.entity.CarDTO;
     import com.example.uiproject.entity.BookingRequest;
     import com.example.uiproject.entity.CarBrandDTO;
     import com.example.uiproject.entity.CarDTO;
@@ -13,7 +16,6 @@
     import com.example.uiproject.entity.ResultDTO;
     import com.example.uiproject.entity.updateProfileRequest;
     import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
-
     import java.util.List;
     import java.util.Map;
     import okhttp3.MultipartBody;
@@ -28,9 +30,6 @@
     import retrofit2.http.POST;
     import retrofit2.http.Part;
     import retrofit2.http.Path;
-    import retrofit2.http.Query;
-    import retrofit2.http.QueryMap;
-
 
     public interface ApiService {
 
@@ -49,12 +48,17 @@
         @POST("/api/auth/reset")
         Call<Object> resetPass (@Body Map<String,String> resetRequest);
 
+        @POST("/api/auth/register")
+        Call<ResultDTO> register(@Body UserRequest userRequest);
+
+        @POST("/api/auth/verify-otp")
+        Call<ResultDTO> verifyOtp(@Body UserRequest userRequest);
+
         @GET("/api/carbrand")
         Call<List<CarBrandDTO>> getAllCarBrandActive ();
 
         @GET("/api/car/brand/{idBrand}")
         Call<List<CarDTO>> getAllCarOfBrand (@Path("idBrand") Long idBrand);
-      
         @GET("/api/car")
         Call<List<CarDTO>> getAllCar ();
 
@@ -66,20 +70,20 @@
       
         @GET("/api/car/sale")
         Call<List<CarDTO>> getSaleCar ();
-      
+
         @GET("api/carbrand")
         Call<List<Brand>> getAllBrands();
-      
+
         @GET("api/carline")
         Call<List<Line>> getAllLines();
-      
+
         @Multipart
         @POST("/api/upload/multiple")
         Call<List<String>> uploadMultipleImages(@Part List<MultipartBody.Part> images);
-      
+
         @POST("/api/car/insertCar")
         Call<Void> createCar(@Body AddCarRequest car);
-      
+
         @GET("/api/car/findCar")
         Call<List<CarDTO>> findCar (@QueryMap Map<String, Object> params);
 

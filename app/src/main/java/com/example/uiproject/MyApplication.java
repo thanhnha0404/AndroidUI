@@ -2,6 +2,7 @@ package com.example.uiproject;
 
 import android.app.Application;
 
+
 import com.cloudinary.android.MediaManager;
 
 import java.util.HashMap;
@@ -13,9 +14,9 @@ public class MyApplication extends Application {
         super.onCreate();
 
         Map config = new HashMap();
-        config.put("cloud_name", "dgmlgi7p4");
-        config.put("api_key", "628256499685731");
-        config.put("api_secret", "uWiZf7yK-HjxcHpghszH8tzI2P0");
+        config.put("cloud_name", "dk6kku8el");
+        config.put("api_key", "462585933415641");
+        config.put("api_secret", "w2ee_T1aj5cAVjuvJJXBMLukmpw");
         MediaManager.init(this, config);
     }
 }

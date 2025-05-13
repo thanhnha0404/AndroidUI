@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.uiproject.R;
+import com.example.uiproject.adapter.CarAdapter;
 import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.dialog.CarDetailsDialog;
@@ -25,12 +27,10 @@ import com.example.uiproject.adapter.CarAdapter;
 import com.example.uiproject.dialog.SearchResultDialog;
 import com.example.uiproject.entity.CarBrandDTO;
 import com.example.uiproject.entity.CarDTO;
-import com.example.uiproject.model.Car;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -191,7 +191,7 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
         // Toggle favorite status
         car.setFavorite(!car.isFavorite());
         carAdapter.notifyItemChanged(position);
-        
+
         String message = car.isFavorite() ? "Added to favorites" : "Removed from favorites";
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
     }
@@ -244,9 +244,6 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
                 }
             }
         });
-
-        
-
     }
     
 
