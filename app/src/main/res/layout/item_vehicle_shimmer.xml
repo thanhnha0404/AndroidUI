@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.facebook.shimmer.ShimmerFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/shimmer_layout"
+    android:layout_width="280dp"
+    android:layout_height="180dp"
+    android:layout_margin="8dp"
+    app:shimmer_auto_start="true"
+    app:shimmer_duration="1500">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        app:strokeWidth="1dp"
+        app:strokeColor="#DDDDDD">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Shimmer cho hình ảnh -->
+            <View
+                android:id="@+id/shimmer_image"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:background="#DDDDDD"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Shimmer cho tên xe -->
+            <View
+                android:id="@+id/shimmer_name"
+                android:layout_width="0dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="#CCCCCC"
+                app:layout_constraintTop_toBottomOf="@id/shimmer_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/shimmer_sale" />
+
+            <!-- Shimmer cho sale -->
+            <View
+                android:id="@+id/shimmer_sale"
+                android:layout_width="40dp"
+                android:layout_height="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="#CCCCCC"
+                app:layout_constraintTop_toBottomOf="@id/shimmer_image"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Shimmer cho selected indicator -->
+            <View
+                android:layout_width="32dp"
+                android:layout_height="6dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="12dp"
+                android:background="#BBBBBB"
+                app:layout_constraintTop_toBottomOf="@id/shimmer_name"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</com.facebook.shimmer.ShimmerFrameLayout>

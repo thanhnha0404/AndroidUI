@@ -106,27 +106,4 @@
         app:layout_constraintStart_toStartOf="@+id/et_password_2"
         app:layout_constraintTop_toBottomOf="@+id/et_password_2" />
 
-    <TextView
-        android:id="@+id/a_member"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="bạn chưa có tài khoản?"
-        android:textColor="@android:color/white"
-        app:fontFamily="@font/roboto"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/btn_verify" />
-
-    <TextView
-        android:id="@+id/register"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:text="Đăng kí"
-        android:textColor="@color/colorSecondary"
-        app:fontFamily="@font/roboto_bold"
-        app:layout_constraintBottom_toBottomOf="@+id/a_member"
-        app:layout_constraintStart_toEndOf="@+id/a_member"
-        app:layout_constraintTop_toTopOf="@+id/a_member" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

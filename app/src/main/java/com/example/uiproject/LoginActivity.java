@@ -23,6 +23,7 @@ import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.entity.ErrorResponseDTO;
 import com.example.uiproject.entity.GGLoginRequest;
 import com.example.uiproject.entity.ResultDTO;
+import com.example.uiproject.util.OpenProgressDialog;
 import com.example.uiproject.util.SessionManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -89,7 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                 loginRequest.put("email",et_name.getText().toString());
                 loginRequest.put("password",et_pass.getText().toString());
                 boolean isAdmin = cbAdmin.isChecked();
-
+                OpenProgressDialog.showProgressDialog(LoginActivity.this);
                 if(isAdmin){
                     loginAdmin(loginRequest);
                 } else {
@@ -228,6 +229,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
                 Gson gson = new Gson();
+                OpenProgressDialog.hideProgressDialog();
                 if (response.isSuccessful() && response.body() != null) {
                     // Phản hồi thành công
                     String json = gson.toJson(response.body());
@@ -288,6 +290,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
                 Gson gson = new Gson();
+                OpenProgressDialog.hideProgressDialog();
                 if (response.isSuccessful() && response.body() != null) {
                     // Phản hồi thành công
                     String json = gson.toJson(response.body());

@@ -244,6 +244,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                     public void onSuccess(String requestId, Map resultData) {
                         progressBar.setVisibility(View.GONE);
                         urlImg = resultData.get("url").toString();
+                        urlImg = updateURL (urlImg);
                         performUpdateProfile();
 
                     }
@@ -258,6 +259,11 @@ public class ProfileEditActivity extends AppCompatActivity {
                     public void onReschedule(String requestId, ErrorInfo error) {}
                 })
                 .dispatch();
+    }
+
+    private String updateURL (String url){
+        if (url == null) return null;
+        return url.replaceFirst("^http://", "https://");
     }
 
     private void loadUserData() {
@@ -311,7 +317,8 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         if (cus.getAvatar() != null) {
             Glide.with(ProfileEditActivity.this)
-                    .load(urlImg)         // hoặc brand.getLogo() nếu là URL ảnh
+                    .load(urlImg)
+                    .override(500, 500) // hoặc brand.getLogo() nếu là URL ảnh
                     .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
                     .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
                     .into(avatarImageView);
@@ -319,7 +326,7 @@ public class ProfileEditActivity extends AppCompatActivity {
 
         streetEditText.setText(cus.getAddressDTO().getStreet());
         wardEditText.setText(cus.getAddressDTO().getWard());
-        districtEditText.setText(cus.getAddressDTO().getStreet());
+        districtEditText.setText(cus.getAddressDTO().getDistrict());
         provinceEditText.setText(cus.getAddressDTO().getProvince());
     }
 

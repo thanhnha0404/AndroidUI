@@ -63,27 +63,50 @@
                 app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_location_label" />
 
-            <ImageButton
-                android:id="@+id/iv_notification"
+            <!-- Thêm FrameLayout bao quanh ImageButton để có thể đặt badge -->
+            <FrameLayout
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                    android:layout_marginEnd="8dp"
-                android:background="@drawable/button_ripple_effect"
-                android:padding="12dp"
-                    android:src="@drawable/ic_notification"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_profile"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_profile"
                 app:layout_constraintEnd_toStartOf="@id/iv_profile"
-                    app:layout_constraintTop_toTopOf="@id/iv_profile" />
+                app:layout_constraintTop_toTopOf="@id/iv_profile">
 
-            <ImageButton
+                <ImageButton
+                    android:id="@+id/iv_notification"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/button_ripple_effect"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_notification" />
+
+                <!-- Badge hiển thị số thông báo -->
+                <TextView
+                    android:id="@+id/badge_notification"
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_gravity="top|end"
+                    android:background="@drawable/badge_background"
+                    android:gravity="center"
+                    android:text="9"
+                    android:textColor="@android:color/white"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+            </FrameLayout>
+
+            <ImageView
                 android:id="@+id/iv_profile"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:background="@drawable/button_ripple_effect"
                 android:padding="8dp"
-                    android:src="@drawable/ic_profile"
+                android:src="@drawable/ic_profile"
+                android:background="@drawable/button_ripple_effect"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <!-- Title -->
@@ -123,20 +146,22 @@
                 android:paddingHorizontal="16dp">
 
                 <ImageButton
+                    android:id="@+id/btnNameSearch"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                        android:layout_marginEnd="8dp"
+                    android:layout_marginEnd="8dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:padding="12dp"
-                        android:src="@drawable/ic_search" />
+                    android:src="@drawable/ic_search" />
 
                 <EditText
+                    android:id="@+id/editTextName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
                     android:text="Search vehicle..."
-                        android:textColor="#AAAAAA"
-                        android:background="@android:color/transparent"
-                        android:textSize="14sp" />
+                    android:textColor="#AAAAAA"
+                    android:textSize="14sp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

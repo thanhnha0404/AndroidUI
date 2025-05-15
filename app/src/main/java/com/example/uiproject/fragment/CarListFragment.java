@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import androidx.appcompat.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ import com.example.uiproject.adapter.CarAdapter;
 import com.example.uiproject.dialog.SearchResultDialog;
 import com.example.uiproject.entity.CarBrandDTO;
 import com.example.uiproject.entity.CarDTO;
+import com.example.uiproject.util.OpenProgressDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,10 +44,11 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
     private RecyclerView carsRecyclerView;
     private CarAdapter carAdapter;
     private List<CarDTO> carList;
-    private EditText searchEditText;
+    private SearchView searchView;
     private ImageButton filterButton;
     private TextView recommendedTextView;
     CarBrandDTO brand;
+    String nameKey;
     private ApiService apiService;
 
     Map<String,Object> params = new HashMap<>();
@@ -79,14 +82,19 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
 
         // Initialize views
         brand = getArguments() != null ? (CarBrandDTO) getArguments().getSerializable("brand") : null;
+        nameKey = getArguments() != null ? getArguments().getString("nameKey"): null;
+
         carsRecyclerView = view.findViewById(R.id.carsRecyclerView);
-        searchEditText = view.findViewById(R.id.searchEditText);
         filterButton = view.findViewById(R.id.filterButton);
         recommendedTextView = view.findViewById(R.id.recommendedTextView);
         apiService = RetrofitClient.getInstance().create(ApiService.class);
+        searchView = view.findViewById(R.id.searchView);
 
         if (brand != null){
             recommendedTextView.setText(brand.getName());
+        }
+        else if (nameKey != null){
+            recommendedTextView.setText("All Car");
         }
         else {
             recommendedTextView.setText("All Car");
@@ -101,12 +109,66 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
         // Set up RecyclerView
         setupRecyclerView();
 
+        OpenProgressDialog.showProgressDialog(requireContext());
+
         if ( brand != null && brand.getId() != null){
             loadCarOfBrand();
-        }
-        else{
+        } else if (nameKey != null) {
+            loadCarByName();
+        } else{
             loadAllCar();
         }
+
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                filterListener(s);
+                return true;
+            }
+        });
+    }
+
+    private void filterListener (String text){
+        List<CarDTO> list = new ArrayList<>();
+        for (CarDTO car : carList){
+            if (car.getName().toLowerCase().contains(text.toLowerCase())){
+                list.add(car);
+            }
+        }
+        if (list.isEmpty()){
+//            Toast.makeText(getActivity(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+        }
+        else{
+            carAdapter.setListenerList(list);
+        }
+    }
+
+    private void loadCarByName (){
+        apiService.getCarByName(nameKey).enqueue(new Callback<List<CarDTO>>() {
+            @Override
+            public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+                OpenProgressDialog.hideProgressDialog();
+                if (response.isSuccessful() && response.body() != null) {
+                    updateCarList(response.body());
+                    Log.e("API_RESPONSE", "Số lượng xe: " + carList.size());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<CarDTO>> call, Throwable t) {
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e("HomeFragment", "Activity is not attached");
+                }
+            }
+        });
     }
 
     private void updateCarList(List<CarDTO> newCars) {
@@ -122,6 +184,7 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
          apiService.getAllCar().enqueue(new Callback<List<CarDTO>>() {
              @Override
              public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+                 OpenProgressDialog.hideProgressDialog();
                  if (response.isSuccessful() && response.body() != null) {
                      updateCarList(response.body());
                      Log.e("API_RESPONSE", "Số lượng xe: " + carList.size());
@@ -160,6 +223,7 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
        apiService.getAllCarOfBrand(brand.getId()).enqueue(new Callback<List<CarDTO>>() {
            @Override
            public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+               OpenProgressDialog.hideProgressDialog();
                if (response.isSuccessful() && response.body() != null) {
                    updateCarList(response.body());
                    Log.e("API_RESPONSE", "Số lượng xe cua hang: " + carList.size());
@@ -223,6 +287,7 @@ public class CarListFragment extends Fragment implements CarAdapter.OnCarClickLi
         apiService.findCar(params).enqueue(new Callback<List<CarDTO>>() {
             @Override
             public void onResponse(Call<List<CarDTO>> call, Response<List<CarDTO>> response) {
+                OpenProgressDialog.hideProgressDialog();
                 if (response.isSuccessful() && response.body() != null) {
                     updateCarList(response.body());
                     Log.e("API_RESPONSE", "Số lượng xe sau khi tim kiem: " + carList.size());

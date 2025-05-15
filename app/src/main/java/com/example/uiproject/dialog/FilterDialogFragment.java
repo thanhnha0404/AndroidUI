@@ -18,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.uiproject.R;
+import com.example.uiproject.util.OpenProgressDialog;
 import com.google.android.material.slider.RangeSlider;
 
 import java.text.NumberFormat;
@@ -143,6 +144,7 @@ public class FilterDialogFragment extends DialogFragment {
             String message = "Filter Applied";
             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
             dismiss();
+            OpenProgressDialog.showProgressDialog(requireContext());
         });
     }
     

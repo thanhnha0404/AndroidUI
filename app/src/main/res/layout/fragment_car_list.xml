@@ -40,20 +40,22 @@
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_search" />
+<!--            <ImageView-->
+<!--                android:layout_width="24dp"-->
+<!--                android:layout_height="24dp"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:src="@drawable/ic_search" />-->
 
-            <EditText
-                android:id="@+id/searchEditText"
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="Search car.."
-                android:padding="8dp"
-                android:textSize="14sp" />
+                android:layout_margin="8dp"
+                app:iconifiedByDefault="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:queryHint="Search here..." />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

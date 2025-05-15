@@ -17,6 +17,7 @@ public class MyApplication extends Application {
         config.put("cloud_name", "dk6kku8el");
         config.put("api_key", "462585933415641");
         config.put("api_secret", "w2ee_T1aj5cAVjuvJJXBMLukmpw");
+        config.put("secure", true); // ép Cloudinary trả HTTPS
         MediaManager.init(this, config);
     }
 }

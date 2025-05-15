@@ -15,6 +15,7 @@ import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.entity.ErrorResponseDTO;
 import com.example.uiproject.entity.ResultDTO;
+import com.example.uiproject.util.OpenProgressDialog;
 import com.example.uiproject.util.SessionManager;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -45,6 +46,7 @@ public class resetPassActivity extends AppCompatActivity {
         resetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 EditText passMain = findViewById(R.id.et_password_1);
                 EditText passCheck = findViewById(R.id.et_password_2);
                 SessionManager sessionManager = new SessionManager(resetPassActivity.this);
@@ -56,6 +58,7 @@ public class resetPassActivity extends AppCompatActivity {
                     resetRequest.put("newPassword",passMain.getText().toString());
                     resetRequest.put("otp",otp);
                     resetRequest.put("email",email);
+                    OpenProgressDialog.showProgressDialog(resetPassActivity.this);
                     resetPass(resetRequest);
                 }
                 else{
@@ -69,6 +72,7 @@ public class resetPassActivity extends AppCompatActivity {
         apiService.resetPass(resetRequest).enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
+                OpenProgressDialog.hideProgressDialog();
                 Gson gson = new Gson();
                 if (response.isSuccessful() && response.body() != null){
                     String json = gson.toJson(response.body());
@@ -106,6 +110,7 @@ public class resetPassActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
+                OpenProgressDialog.hideProgressDialog();
                 Toast.makeText(resetPassActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });

@@ -6,8 +6,8 @@
         android:title="Home" />
     <item
         android:id="@+id/nav_favorite"
-        android:icon="@drawable/ic_favorite"
-        android:title="Favorite" />
+        android:icon="@drawable/ic_history"
+        android:title="History" />
     <item
         android:id="@+id/nav_notification"
         android:icon="@drawable/ic_notification"

@@ -25,6 +25,7 @@ import com.example.uiproject.LoginActivity;
 import com.example.uiproject.R;
 import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
+import com.example.uiproject.dialog.ContractDialog;
 import com.example.uiproject.entity.AddressDTO;
 import com.example.uiproject.entity.BookingRequest;
 import com.example.uiproject.entity.CarDTO;
@@ -33,6 +34,7 @@ import com.example.uiproject.entity.CustomerDTO;
 import com.example.uiproject.entity.ErrorResponseDTO;
 import com.example.uiproject.entity.PaymentResDTO;
 import com.example.uiproject.entity.ResultDTO;
+import com.example.uiproject.util.DataBaseHandler;
 import com.example.uiproject.util.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -77,7 +79,9 @@ public class BookingFragment extends Fragment {
     private TextView tvAddress;
     private ApiService apiService;
     private SessionManager sessionManager;
+    private DataBaseHandler dataBaseHandler;
     private Long finalCost = 0L;
+    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,6 +110,7 @@ public class BookingFragment extends Fragment {
 
         apiService = RetrofitClient.getInstance().create(ApiService.class);
         sessionManager = new SessionManager(requireContext());
+        dataBaseHandler = new DataBaseHandler(requireContext());
     }
 
     @Override
@@ -133,7 +138,7 @@ public class BookingFragment extends Fragment {
         ratingBar.setRating(4f);
         tvDiscount.setText(car.getDiscount() + "%");
         AddressDTO addressDTO = car.getAddressDTO();
-        tvAddress.setText(addressDTO.getStreet() + " " + addressDTO.getDistrict());
+        tvAddress.setText(addressDTO.getStreet() + ", " + addressDTO.getDistrict());
 
         if (!car.getPictures().isEmpty()){
             Glide.with(requireContext())
@@ -182,21 +187,11 @@ public class BookingFragment extends Fragment {
 
                     if (result.isStatus()) {
                         ContractDTO contractDTO = (ContractDTO) result.getData();
-                        // Hiển thị dialog xác nhận
-                        new AlertDialog.Builder(getContext())
-                                .setTitle("Bạn có muốn thanh toán ngay?")
-                                .setMessage("Nếu bạn không thanh toán trước ngày nhận xe thì hợp đồng sẽ bị hủy.")
-                                .setPositiveButton("Thanh toán", (dialog, which) -> {
-                                    goToPayment(contractDTO);
-                                    dialog.dismiss();
-                                })
-                                .setNegativeButton("Không", (dialog, which) -> {
-                                    requireActivity().getSupportFragmentManager().beginTransaction()
-                                            .remove(BookingFragment.this)  // Loại bỏ fragment
-                                            .commit();
-                                    dialog.dismiss();
-                                })
-                                .show();
+                        //Hien thi dialog hien thi thong tin contract truoc
+                        openDialogSuccess(contractDTO);
+                        // Tao thong bao hop dong thanh cong
+                        createNotification(contractDTO);
+
                     }
                 }
                 else{
@@ -229,6 +224,68 @@ public class BookingFragment extends Fragment {
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void createNotification (ContractDTO contractDTO){
+        String title = "Tạo hợp đồng thành công";
+        String message = "Hợp đồng " + contractDTO.getId() +
+                " thuê xe " + contractDTO.getCars().get(0).getName() +
+                " từ " + sdf.format(contractDTO.getDateFrom()) +
+                " đến " + sdf.format(contractDTO.getDateTo()) +
+                " . Vui lòng vào trang lịch sử hợp đồng để xem chi tiết ";
+
+        String timestamp = sdf.format(new Date()); // lấy thời gian hiện tại
+        int idUser = contractDTO.getCustomerDTO().getId();
+
+        String sql = "INSERT INTO Notifications (idUser, title, message, timestamp, is_read) " +
+                "VALUES (" + idUser + ", '" + title + "', '" + message + "', '" + timestamp + "', 0)";
+        dataBaseHandler.QueryData(sql);
+
+    }
+
+    private void openDialogSuccess (ContractDTO contractDTO){
+
+
+        String  startDate = sdf.format(contractDTO.getDateFrom());
+        String  endDate = sdf.format(contractDTO.getDateTo());
+
+        CarDTO car = contractDTO.getCars().get(0);
+
+        String location = "";
+        if (car.getAddressDTO() != null){
+            String street = car.getAddressDTO().getStreet();
+            String district = car.getAddressDTO().getDistrict();
+            String city = car.getAddressDTO().getProvince();
+            location = street + ", " + district + ", " + city;
+        }
+
+        ContractDialog dialog = new ContractDialog(
+                requireContext(),       // hoặc MainActivity.this nếu bạn đang ở trong Activity
+                contractDTO.getId(),                // contractId
+                contractDTO.getCustomerDTO().getName(),         // customerName
+                car.getName(),         // carName
+                startDate,           // startDate
+                endDate,
+                location// endDate
+        );
+
+        dialog.setOnDismissListener(d -> {
+            // Hiển thị dialog xác nhận sau khi dialog thành công bị đóng
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Bạn có muốn thanh toán ngay?")
+                    .setMessage("Nếu bạn không thanh toán trước ngày nhận xe thì hợp đồng sẽ bị hủy.")
+                    .setPositiveButton("Thanh toán", (dialogConfirm, which) -> {
+                        goToPayment(contractDTO);
+                        dialogConfirm.dismiss();
+                    })
+                    .setNegativeButton("Không", (dialogConfirm, which) -> {
+                        requireActivity().getSupportFragmentManager().popBackStack();
+                        dialog.dismiss(); // Đóng dialog
+                    })
+                    .show();
+        });
+
+        dialog.show();  // <--- Đây là nơi gọi hàm show()
     }
 
     private void goToPayment (ContractDTO contractDTO){

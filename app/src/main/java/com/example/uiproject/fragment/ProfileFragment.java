@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.uiproject.R;
 import com.example.uiproject.dialog.SettingsDialog;
 import com.example.uiproject.ProfileEditActivity;
@@ -21,6 +23,7 @@ public class ProfileFragment extends Fragment {
     private TextView tvProfileName, tvProfileEmail, tvNotificationStatus;
     private LinearLayout itemMyProfile, itemSettings, itemNotification, itemLogout;
     private CustomerDTO customer;
+    private ImageView iv_profile_pic;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -46,6 +49,7 @@ public class ProfileFragment extends Fragment {
         tvProfileName = view.findViewById(R.id.tv_profile_name);
         tvProfileEmail = view.findViewById(R.id.tv_profile_email);
         tvNotificationStatus = view.findViewById(R.id.tv_notification_status);
+        iv_profile_pic = view.findViewById(R.id.iv_profile_pic);
         
         itemMyProfile = view.findViewById(R.id.item_my_profile);
         itemSettings = view.findViewById(R.id.item_settings);
@@ -81,6 +85,13 @@ public class ProfileFragment extends Fragment {
 
     private void loadUserData() {
         if (customer != null){
+            if (customer.getAvatar() != null && !customer.getAvatar().isEmpty()){
+                Glide.with(requireContext())
+                        .load(customer.getAvatar())
+                        .placeholder(R.drawable.ic_person) // ảnh tạm khi đang load
+                        .error(R.drawable.ic_person)         // ảnh nếu load lỗi
+                        .into(iv_profile_pic); // ivProfile là ImageView bạn muốn hiển thị
+            }
             tvProfileName.setText(customer.getName());
             tvProfileEmail.setText(customer.getEmail());
         }
