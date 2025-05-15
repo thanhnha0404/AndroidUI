@@ -14,10 +14,12 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
+import com.example.uiproject.LoginActivity;
 import com.example.uiproject.R;
 import com.example.uiproject.dialog.SettingsDialog;
 import com.example.uiproject.ProfileEditActivity;
 import com.example.uiproject.entity.CustomerDTO;
+import com.example.uiproject.util.SessionManager;
 
 public class ProfileFragment extends Fragment {
     private TextView tvProfileName, tvProfileEmail, tvNotificationStatus;
@@ -75,8 +77,11 @@ public class ProfileFragment extends Fragment {
         });
 
         itemLogout.setOnClickListener(v -> {
-            // Handle logout
-            // TODO: Implement logout logic
+            SessionManager sessionManager = new SessionManager(requireContext());
+            sessionManager.logout();
+            Intent i = new Intent();
+            i.setClass(requireContext(), LoginActivity.class);
+            startActivity(i);
         });
 
         // Load user data

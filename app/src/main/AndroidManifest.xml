@@ -40,12 +40,15 @@
         <activity
             android:name=".CarActivity"
             android:exported="false" />
+
         <activity
             android:name=".HomeActivity"
             android:exported="false" />
+
         <activity
             android:name=".admin.AdminActivity"
             android:exported="false" />
+
         <activity
             android:name=".admin.CarManagerActivity"
             android:exported="false" />
@@ -53,10 +56,10 @@
             android:name=".admin.AddCarActivity"
             android:exported="false" />
         <activity
-            android:name=".admin.RegisterActivity"
+            android:name=".RegisterActivity"
             android:exported="false" />
         <activity
-            android:name=".admin.OtpVerificationActivity"
+            android:name=".OtpVerificationActivity"
             android:exported="false" />
         <activity
             android:name=".admin.EditCarActivity"

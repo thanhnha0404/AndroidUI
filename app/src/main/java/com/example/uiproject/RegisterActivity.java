@@ -1,4 +1,4 @@
-package com.example.uiproject.admin;
+package com.example.uiproject;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
@@ -23,7 +23,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.uiproject.R;
 import com.example.uiproject.admin.model.ResultDTO2;
 import com.example.uiproject.admin.model.UserRequest;
 import com.example.uiproject.api.ApiService;

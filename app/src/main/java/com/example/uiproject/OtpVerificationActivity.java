@@ -1,4 +1,4 @@
-package com.example.uiproject.admin;
+package com.example.uiproject;
 
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.uiproject.R;
 import com.example.uiproject.admin.model.ResultDTO2;
 import com.example.uiproject.admin.model.UserRequest;
 import com.example.uiproject.api.ApiService;

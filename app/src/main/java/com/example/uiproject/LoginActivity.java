@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 1001;
     private Button btnGoogleLogin;
+    private TextView register;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.btn_login);
         btnGoogleLogin = findViewById(R.id.btn_google_login);
         TextView forgotButton = findViewById(R.id.forgot_password);
+        register = findViewById(R.id.register);
 
 
         loginButton.setOnClickListener(new View.OnClickListener() {
@@ -102,6 +104,15 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                signIn();
+            }
+        });
+
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                i.setClass(LoginActivity.this,RegisterActivity.class);
+                startActivity(i);
             }
         });
 
