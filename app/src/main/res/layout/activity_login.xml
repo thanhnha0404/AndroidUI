@@ -187,11 +187,12 @@
         android:id="@+id/forgot_password"
         android:layout_width="245dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="229dp"
+        android:layout_marginStart="224dp"
+        android:layout_marginTop="16dp"
         android:text="quên mật khẩu?"
         android:textColor="@color/colorSecondary"
         app:fontFamily="@font/roboto"
         app:layout_constraintStart_toStartOf="@+id/admin_and_forgot_container"
-        tools:layout_editor_absoluteY="449dp" />
+        app:layout_constraintTop_toTopOf="@+id/admin_and_forgot_container" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
