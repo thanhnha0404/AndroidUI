@@ -41,7 +41,17 @@ public class AdminActivity extends AppCompatActivity {
         contractListOption.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Navigate to contract list screen
+                Intent intent = new Intent(AdminActivity.this, ContractListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        TextView statisticalListOption = findViewById(R.id.statisticalListOption);
+        statisticalListOption.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AdminActivity.this, RevenueChartActivity.class);
+                startActivity(intent);
             }
         });
     }

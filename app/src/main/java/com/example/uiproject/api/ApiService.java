@@ -34,6 +34,9 @@
         @POST("/api/auth/login")
         Call<Object> login(@Body Map<String,String> loginRequest);
 
+        @POST("/api/auth/loginAdmin")
+        Call<Object> loginAdmin(@Body Map<String,String> loginRequest);
+
         @POST("api/auth/ggLogin")
         Call<Object> loginGG(@Body GGLoginRequest ggLoginRequest);
 
@@ -49,7 +52,7 @@
         @POST("/api/auth/register")
         Call<ResultDTO2> register(@Body UserRequest userRequest);
 
-        @POST("/api/auth/verify-otp")
+        @POST("/api/auth/verifyOtp")
         Call<ResultDTO2> verifyOtp(@Body UserRequest userRequest);
 
         @GET("/api/carbrand")

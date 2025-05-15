@@ -30,7 +30,7 @@ public class RetrofitClientAdmin {
                     .create();
             // Cấu hình Retrofit với OkHttpClient
             retrofit = new Retrofit.Builder()
-                    .baseUrl("http://192.168.1.9:8081") // Địa chỉ server
+                    .baseUrl("http://192.168.1.7:8081") // Địa chỉ server
                     .client(okHttpClient)
                     .addConverterFactory(ScalarsConverterFactory.create())
                     .addConverterFactory(GsonConverterFactory.create(gson)) // Sử dụng Gson để chuyển đổi JSON

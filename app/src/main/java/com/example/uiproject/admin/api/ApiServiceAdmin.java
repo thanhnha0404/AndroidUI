@@ -4,7 +4,10 @@ import com.example.uiproject.admin.model.AddCarRequest;
 import com.example.uiproject.admin.model.Brand;
 import com.example.uiproject.admin.model.CarDTO;
 import com.example.uiproject.admin.model.Line;
+import com.example.uiproject.admin.model.PaymentDTO;
 import com.example.uiproject.admin.model.ResultDTO2;
+import com.example.uiproject.admin.model.ContractInfor;
+import com.example.uiproject.admin.model.UpdateContractRequest;
 
 import java.util.List;
 
@@ -50,4 +53,13 @@ public interface ApiServiceAdmin {
 
     @PUT("/api/car/updateCar")
     Call<String> updateCar(@Body AddCarRequest request);
+
+    @GET("/api/contract/getAll")
+    Call<List<ContractInfor>> getAllContract();
+
+    @PUT("/api/contract/update")
+    Call<ResultDTO2> updateStatus(@Body UpdateContractRequest request);
+
+    @GET("/api/payment/getAll")
+    Call<List<PaymentDTO>> getAllPayment();
 }
