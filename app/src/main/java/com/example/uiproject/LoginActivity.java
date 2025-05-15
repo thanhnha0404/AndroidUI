@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -15,6 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.uiproject.admin.AdminActivity;
 import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.entity.ErrorResponseDTO;
@@ -50,6 +53,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1001;
     private Button btnGoogleLogin;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
         Button loginButton = findViewById(R.id.btn_login);
         btnGoogleLogin = findViewById(R.id.btn_google_login);
         TextView forgotButton = findViewById(R.id.forgot_password);
-
+        CheckBox cbAdmin = findViewById(R.id.cb_admin);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +88,13 @@ public class LoginActivity extends AppCompatActivity {
                 Map<String,String> loginRequest = new HashMap<>();
                 loginRequest.put("email",et_name.getText().toString());
                 loginRequest.put("password",et_pass.getText().toString());
-                login(loginRequest);
+                boolean isAdmin = cbAdmin.isChecked();
+
+                if(isAdmin){
+                    loginAdmin(loginRequest);
+                } else {
+                    login(loginRequest);
+                }
             }
         });
 
@@ -270,4 +281,66 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void loginAdmin(Map<String,String> loginRequest){
+
+        apiService.loginAdmin(loginRequest).enqueue(new Callback<Object>() {
+            @Override
+            public void onResponse(Call<Object> call, Response<Object> response) {
+                Gson gson = new Gson();
+                if (response.isSuccessful() && response.body() != null) {
+                    // Phản hồi thành công
+                    String json = gson.toJson(response.body());
+
+                    //chuyen doi data cho dung
+                    Type type = new TypeToken<ResultDTO<String>>() {}.getType();
+                    ResultDTO<String> result = gson.fromJson(json, type);
+
+
+                    String message = result.getMessage();
+                    Toast.makeText(LoginActivity.this,message, Toast.LENGTH_SHORT).show();
+
+                    if (result.isStatus()) {
+
+                        String adminToken = (String) result.getData();
+                        // luu customerToken vao session
+                        SessionManager sessionManager = new SessionManager(LoginActivity.this);
+                        sessionManager.saveToken(adminToken);
+                        // mo form giao dien thue xe
+
+                        Intent intent = new Intent();
+                        intent.setClass(LoginActivity.this, AdminActivity.class);
+                        startActivity(intent);
+
+                    }
+                } else {
+                    // Nếu phản hồi không thành công, đọc từ errorBody
+                    try {
+                        String errorJson = response.errorBody() != null ? response.errorBody().string() : "";
+                        if (!errorJson.isEmpty() && errorJson != null){
+                            ErrorResponseDTO error = gson.fromJson(errorJson, ErrorResponseDTO.class);
+                            // Hiển thị lỗi từ server
+                            Toast.makeText(LoginActivity.this, error.getError(), Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(LoginActivity.this, "Lỗi không xác định từ Server", Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        Toast.makeText(LoginActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Object> call, Throwable t) {
+                t.printStackTrace();
+                Toast.makeText(LoginActivity.this, "Lỗi kết nối: " + t.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
 }

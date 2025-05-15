@@ -29,7 +29,7 @@
         tools:replace="android:fullBackupContent">
 
         <activity
-            android:name=".admin.AdminActivity"
+            android:name=".admin.RegisterActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -53,7 +53,7 @@
             android:name=".admin.AddCarActivity"
             android:exported="false" />
         <activity
-            android:name=".admin.RegisterActivity"
+            android:name=".admin.AdminActivity"
             android:exported="false" />
         <activity
             android:name=".admin.OtpVerificationActivity"
@@ -69,6 +69,12 @@
             android:exported="false" />
         <activity
             android:name=".admin.EditBrandActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ContractListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.RevenueChartActivity"
             android:exported="false" />
         <activity
             android:name=".ForgotActivity"

@@ -89,16 +89,26 @@
         app:layout_constraintTop_toBottomOf="@id/passwordText" />
 
     <!-- Quên mật khẩu -->
-    <TextView
-        android:id="@+id/forgot_password"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/admin_and_forgot_container"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="quên mật khẩu?"
-        android:textColor="@color/colorSecondary"
-        app:fontFamily="@font/roboto"
-        app:layout_constraintTop_toBottomOf="@id/et_password"
-        app:layout_constraintEnd_toEndOf="@id/et_password" />
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="@id/et_password"
+        app:layout_constraintStart_toStartOf="@id/et_password"
+        app:layout_constraintTop_toBottomOf="@id/et_password">
+
+        <CheckBox
+            android:id="@+id/cb_admin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorSecondary"
+            android:text="Admin"
+            android:textColor="@color/colorSecondary" />
+
+    </LinearLayout>
 
     <!-- Nút đăng nhập -->
     <Button
@@ -111,7 +121,7 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         app:fontFamily="@font/roboto_mono_bold"
-        app:layout_constraintTop_toBottomOf="@id/forgot_password"
+        app:layout_constraintTop_toBottomOf="@id/admin_and_forgot_container"
         app:layout_constraintStart_toStartOf="@id/et_password"
         app:layout_constraintEnd_toEndOf="@id/et_password" />
 
@@ -172,5 +182,16 @@
         app:layout_constraintBottom_toBottomOf="@id/a_member"
         app:layout_constraintStart_toEndOf="@id/a_member"
         app:layout_constraintTop_toTopOf="@id/a_member" />
+
+    <TextView
+        android:id="@+id/forgot_password"
+        android:layout_width="245dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="229dp"
+        android:text="quên mật khẩu?"
+        android:textColor="@color/colorSecondary"
+        app:fontFamily="@font/roboto"
+        app:layout_constraintStart_toStartOf="@+id/admin_and_forgot_container"
+        tools:layout_editor_absoluteY="449dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
