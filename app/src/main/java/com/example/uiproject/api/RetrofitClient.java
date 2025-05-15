@@ -29,7 +29,7 @@ public class RetrofitClient {
 
             // Cấu hình Retrofit với OkHttpClient
             retrofit = new Retrofit.Builder()
-                    .baseUrl("https://dab7-14-186-91-73.ngrok-free.app/") // Địa chỉ server
+                    .baseUrl("https://c1a8-14-169-67-150.ngrok-free.app/") // Địa chỉ server
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create(gson)) // Sử dụng Gson để chuyển đổi JSON
                     .build();

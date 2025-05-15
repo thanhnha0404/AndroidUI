@@ -6,12 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -20,6 +23,7 @@ import com.example.uiproject.R;
 public class PaymentFragment extends Fragment {
 
     private String paymentUrl;
+    private ImageButton btnClose;
 
 
     public PaymentFragment() {
@@ -39,6 +43,7 @@ public class PaymentFragment extends Fragment {
         public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View view = inflater.inflate(R.layout.fragment_payment, container, false);
+            btnClose = view.findViewById(R.id.btnClose);
 
             WebView webView = view.findViewById(R.id.webViewPayment);
             webView.getSettings().setJavaScriptEnabled(true);
@@ -49,6 +54,13 @@ public class PaymentFragment extends Fragment {
             } else {
                 Toast.makeText(getContext(), "Không có URL thanh toán!", Toast.LENGTH_SHORT).show();
             }
+
+            btnClose.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    requireActivity().getSupportFragmentManager().popBackStack(); // Quay lại fragment trước đó
+                }
+            });
 
 
             return view;

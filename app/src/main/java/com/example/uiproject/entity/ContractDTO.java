@@ -13,6 +13,16 @@ public class ContractDTO {
     private CustomerDTO customerDTO;
     private List<CarDTO> cars;
 
+    private PaymentDTO paymentDTO;
+
+    public PaymentDTO getPaymentDTO() {
+        return paymentDTO;
+    }
+
+    public void setPaymentDTO(PaymentDTO paymentDTO) {
+        this.paymentDTO = paymentDTO;
+    }
+
     public String getStatus() {
         return status;
     }

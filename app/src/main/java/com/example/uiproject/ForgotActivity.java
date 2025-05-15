@@ -6,8 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -17,6 +20,7 @@ import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.entity.CustomerDTO;
 import com.example.uiproject.entity.ErrorResponseDTO;
 import com.example.uiproject.entity.ResultDTO;
+import com.example.uiproject.util.OpenProgressDialog;
 import com.example.uiproject.util.SessionManager;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -31,6 +35,7 @@ import retrofit2.Response;
 public class ForgotActivity extends AppCompatActivity {
 
     private ApiService apiService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +58,21 @@ public class ForgotActivity extends AppCompatActivity {
                 Map<String,String> forgotRequest = new HashMap<>();
                 forgotRequest.put("email",et_name.getText().toString());
 
+                OpenProgressDialog.showProgressDialog(ForgotActivity.this ); // Hiển thị ProgressDialog
+
                 forgot(forgotRequest);
             }
         });
 
     }
 
+
     private void forgot(Map<String,String> forgotRequest){
 
         apiService.forgot(forgotRequest).enqueue(new Callback<Object>() {
             @Override
             public void onResponse(Call<Object> call, Response<Object> response) {
+                OpenProgressDialog.hideProgressDialog();
                 Gson gson = new Gson();
                 if (response.isSuccessful() && response.body() != null) {
 
@@ -86,7 +95,6 @@ public class ForgotActivity extends AppCompatActivity {
                     }
 
                 } else {
-                    // Nếu phản hồi không thành công, đọc từ errorBody
                     try {
                         String errorJson = response.errorBody() != null ? response.errorBody().string() : "";
                         ErrorResponseDTO error = gson.fromJson(errorJson, ErrorResponseDTO.class);
@@ -102,6 +110,7 @@ public class ForgotActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Object> call, Throwable t) {
+                OpenProgressDialog.hideProgressDialog();
                 Toast.makeText(ForgotActivity.this, "Lỗi kết nối: " + t.getMessage(),Toast.LENGTH_SHORT).show();
             }
         });

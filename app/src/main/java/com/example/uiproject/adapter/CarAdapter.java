@@ -39,6 +39,11 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>  
         return new CarViewHolder(view);
     }
 
+    public void  setListenerList (List<CarDTO> carList){
+        this.carList = carList;
+        notifyDataSetChanged();
+    }
+
     @Override
     public void onBindViewHolder(@NonNull CarViewHolder holder, int position) {
         CarDTO car = carList.get(position);
@@ -51,11 +56,18 @@ public class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder>  
 
         holder.priceTextView.setText("Fee: " +  formattedPrice  + "/day");
         // Load ảnh bằng Glide
-        Glide.with(holder.itemView.getContext())
-                .load(car.getPictures().get(0))         // hoặc brand.getLogo() nếu là URL ảnh
-                .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
-                .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
-                .into(holder.carImageView);             // ImageView bạn muốn load vào
+
+        if (car.getPictures() != null && !car.getPictures().isEmpty()){
+            Glide.with(holder.itemView.getContext())
+                    .load(car.getPictures().get(0))         // hoặc brand.getLogo() nếu là URL ảnh
+                    .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
+                    .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
+                    .into(holder.carImageView);             // ImageView bạn muốn load vào
+        }
+        else{
+            holder.carImageView.setImageResource(R.drawable.car_background);
+        }
+
 
         // Set favorite icon based on car favorite status
         if (car.isFavorite()) {

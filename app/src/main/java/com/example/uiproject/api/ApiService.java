@@ -8,6 +8,7 @@
     import com.example.uiproject.entity.CarBrandDTO;
     import com.example.uiproject.entity.CarDTO;
     import com.example.uiproject.entity.BookingRequest;
+    import com.example.uiproject.entity.ContractDTO;
     import com.example.uiproject.entity.CustomerDTO;
     import com.example.uiproject.entity.GGLoginRequest;
     import com.example.uiproject.entity.PaymentResDTO;
@@ -59,6 +60,9 @@
         @GET("/api/car")
         Call<List<CarDTO>> getAllCar ();
 
+        @GET("/api/car/findByNameActive")
+        Call<List<CarDTO>> getCarByName (@Query("name") String name);
+
         @POST("/api/car/book")
         Call<Object> book (@Body BookingRequest bookingRequest, @HeaderMap Map<String,Object> headers);
       
@@ -93,4 +97,7 @@
         @GET("/api/payment/create_payment")
         Call<PaymentResDTO> getPayment (@Query("idContract") Long idContract,
                                           @Query("price") Long price);
+
+        @GET("/api/contract/getByCustomerId")
+        Call<List<ContractDTO>> getContractByCusId (@Query("customerId") Long idUser);
     }

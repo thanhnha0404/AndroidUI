@@ -12,7 +12,9 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.entity.CustomerDTO;
+import com.example.uiproject.fragment.HistoryFragment;
 import com.example.uiproject.fragment.HomeFragment;
+import com.example.uiproject.fragment.NotificationFragment;
 import com.example.uiproject.fragment.ProfileFragment;
 import com.example.uiproject.util.SessionManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -98,10 +100,10 @@ public class HomeActivity extends AppCompatActivity {
                 selectedFragment = new HomeFragment();
             } else if (itemId == R.id.nav_favorite) {
                 // TODO: Replace with FavoriteFragment when created
-                selectedFragment = new HomeFragment();
+                selectedFragment = new HistoryFragment();
             } else if (itemId == R.id.nav_notification) {
                 // TODO: Replace with NotificationFragment when created
-                selectedFragment = new HomeFragment();
+                selectedFragment = new NotificationFragment();
             } else if (itemId == R.id.nav_profile) {
                 // TODO: Replace with ProfileFragment when created
                 selectedFragment = new ProfileFragment();
