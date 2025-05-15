@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     // UI components
-    private EditText emailEditText, passwordEditText, dobEditText;
+    private EditText emailEditText, passwordEditText,nameEditText, dobEditText;
     private EditText streetEditText, wardEditText, districtEditText, provinceEditText;
     private RadioGroup sexRadioGroup;
     private Button avatarButton, registerButton;
@@ -82,6 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
         // EditTexts
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
+        nameEditText = findViewById(R.id.nameEditText);
         dobEditText = findViewById(R.id.dobEditText);
         streetEditText = findViewById(R.id.streetEditText);
         wardEditText = findViewById(R.id.wardEditText);
@@ -142,6 +143,12 @@ public class RegisterActivity extends AppCompatActivity {
             isValid = false;
         } else if (password.length() < 6) {
             passwordEditText.setError("Password must be at least 6 characters");
+            isValid = false;
+        }
+
+        String name = nameEditText.getText().toString().trim();
+        if (TextUtils.isEmpty(name)) {
+            nameEditText.setError("Name is required");
             isValid = false;
         }
 
@@ -428,6 +435,7 @@ public class RegisterActivity extends AppCompatActivity {
         // Basic info
         userRequest.setEmail(emailEditText.getText().toString().trim());
         userRequest.setPassword(passwordEditText.getText().toString().trim());
+        userRequest.setName(nameEditText.getText().toString().trim());
         userRequest.setDateOfBirth(parseDate(dobEditText.getText().toString().trim()));
 
         // Sex

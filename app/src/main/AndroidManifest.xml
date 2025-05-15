@@ -52,18 +52,23 @@
         <activity
             android:name=".admin.CarManagerActivity"
             android:exported="false" />
+
         <activity
             android:name=".admin.AddCarActivity"
             android:exported="false" />
+
         <activity
             android:name=".RegisterActivity"
             android:exported="false" />
+
         <activity
             android:name=".OtpVerificationActivity"
             android:exported="false" />
+
         <activity
             android:name=".admin.EditCarActivity"
             android:exported="false" />
+
         <activity
             android:name=".admin.BrandManagerActivity"
             android:exported="false" />
@@ -72,6 +77,12 @@
             android:exported="false" />
         <activity
             android:name=".admin.EditBrandActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.ContractListActivity"
+            android:exported="false" />
+        <activity
+            android:name=".admin.RevenueChartActivity"
             android:exported="false" />
         <activity
             android:name=".ForgotActivity"

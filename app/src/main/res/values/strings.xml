@@ -1,5 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">UIProject</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="contract_status_array">
+        <item>WAIT</item>
+        <item>SUCCESS</item>
+        <item>CANCEL</item>
+        <item>EXPIRED</item>
+        <item>STILL VALID</item>
+    </string-array>
 </resources>
