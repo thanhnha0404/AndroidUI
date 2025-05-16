@@ -24,7 +24,7 @@ import com.example.uiproject.util.SessionManager;
 public class ProfileFragment extends Fragment {
     private TextView tvProfileName, tvProfileEmail, tvNotificationStatus;
     private LinearLayout itemMyProfile, itemSettings, itemNotification, itemLogout;
-    private CustomerDTO customer;
+    private CustomerDTO customer = null;
     private ImageView iv_profile_pic;
 
     public ProfileFragment() {
@@ -82,6 +82,7 @@ public class ProfileFragment extends Fragment {
             Intent i = new Intent();
             i.setClass(requireContext(), LoginActivity.class);
             startActivity(i);
+            requireActivity().finish(); // Ngăn quay lại bằng nút back
         });
 
         // Load user data

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="false">
-        <domain includeSubdomains="true">45a0-14-169-67-150.ngrok-free.app</domain>
+        <domain includeSubdomains="true">e6a3-27-65-136-234.ngrok-free.app</domain>
     </domain-config>
 </network-security-config>

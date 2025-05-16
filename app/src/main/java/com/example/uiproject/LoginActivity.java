@@ -1,6 +1,7 @@
 package com.example.uiproject;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -150,7 +151,8 @@ public class LoginActivity extends AppCompatActivity {
 
             // Lấy ID token để gửi về server Spring Boot
             String personName = account.getDisplayName();
-            String imgLink = account.getPhotoUrl().toString();
+            Uri uri = account.getPhotoUrl();
+            String imgLink = (uri != null) ? uri.toString() : "null";
             String email = account.getEmail();
 
             GGLoginRequest ggLoginRequest = new GGLoginRequest();
@@ -200,11 +202,13 @@ public class LoginActivity extends AppCompatActivity {
                         // mo form giao dien thue xe
                         intent.setClass(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                     else{
                         // mo activity cap nhat thong tin dia chi do luoon
                         intent.setClass(LoginActivity.this, ProfileEditActivity.class);
                         startActivity(intent);
+                        finish();
                     }
                 } else {
                     // Nếu phản hồi không thành công, đọc từ errorBody
@@ -265,6 +269,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent();
                         intent.setClass(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
+                        finish();
 
                     }
                 } else {

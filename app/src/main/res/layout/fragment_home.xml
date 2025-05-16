@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_dropdown"
                 android:drawablePadding="4dp"
-                    android:text="Ngangklik, Sleman"
+                    android:text="Your location is none"
                     android:textColor="@color/black"
                     android:textSize="14sp"
                     android:textStyle="bold"

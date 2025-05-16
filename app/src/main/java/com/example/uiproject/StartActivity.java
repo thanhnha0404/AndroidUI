@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.graphics.Insets;
@@ -19,6 +20,11 @@ import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.entity.CustomerDTO;
 import com.example.uiproject.util.SessionManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +40,7 @@ public class StartActivity extends AppCompatActivity {
     SessionManager sessionManager;
     ApiService apiService;
     CustomerDTO cus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,51 +58,21 @@ public class StartActivity extends AppCompatActivity {
         sessionManager = new SessionManager(this);
         apiService = RetrofitClient.getInstance().create(ApiService.class);
 
+//        sessionManager.logout();
+
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadCustomer();
+                Intent i = new Intent();
+                i.setClass(StartActivity.this, HomeActivity.class);
+                startActivity(i);
+                finish();
             }
         });
     }
 
 
-    private void loadCustomer() {
-        Map<String, Object> headers = new HashMap<>();
-        String authToken = sessionManager.getCustomerToken();
-        if (authToken != null && !authToken.equals("")) {
-            headers.put("Authorization", authToken);
-            apiService.getUser(headers).enqueue(new Callback<CustomerDTO>() {
-                @Override
-                public void onResponse(Call<CustomerDTO> call, Response<CustomerDTO> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        cus = response.body();
-                        Intent i = new Intent();
-                        i.setClass(StartActivity.this, HomeActivity.class);
-                        startActivity(i);
-                    } else {
-                        GoToLogin();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CustomerDTO> call, Throwable t) {
-                   GoToLogin();
-                }
-            });
-        } else {
-            GoToLogin();
-        }
-    }
-
-    private void GoToLogin (){
-        sessionManager.logout();
-        Intent i = new Intent();
-        i.setClass(StartActivity.this,LoginActivity.class);
-        startActivity(i);
-        finish();
-    }
 }
 
 

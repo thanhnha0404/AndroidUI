@@ -2,6 +2,7 @@ package com.example.uiproject.fragment;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.media.tv.TvContract;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,10 +23,12 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.example.uiproject.HomeActivity;
 import com.example.uiproject.LoginActivity;
+import com.example.uiproject.ProfileEditActivity;
 import com.example.uiproject.R;
 import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
 import com.example.uiproject.dialog.ContractDialog;
+import com.example.uiproject.dialog.ReloginDialog;
 import com.example.uiproject.entity.AddressDTO;
 import com.example.uiproject.entity.BookingRequest;
 import com.example.uiproject.entity.CarDTO;
@@ -161,8 +164,12 @@ public class BookingFragment extends Fragment {
     private void createContract (){
         Map<String,Object> headers = new HashMap<>();
         String authToken = sessionManager.getCustomerToken();
+        if (authToken == null){
+            Toast.makeText(requireContext(),"Vui lòng đăng nhập để thực hiện",Toast.LENGTH_LONG).show();
+            Logout();
+            return;
+        }
         headers.put("Authorization",authToken);
-
         BookingRequest bookingRequest = new BookingRequest();
         bookingRequest.setCarId(car.getId());
         bookingRequest.setDateFrom(fromDate);
@@ -198,6 +205,7 @@ public class BookingFragment extends Fragment {
                     // Nếu phản hồi không thành công, đọc từ errorBody
                     try {
                         String errorJson = response.errorBody() != null ? response.errorBody().string() : "";
+                        int statusCode = response.code();
                         if (!errorJson.isEmpty() && errorJson != null){
                             ErrorResponseDTO error = gson.fromJson(errorJson, ErrorResponseDTO.class);
                             // Hiển thị lỗi từ server
@@ -206,6 +214,11 @@ public class BookingFragment extends Fragment {
                                 message = "Có lỗi xảy ra!"; // thông báo mặc định
                             }
                             Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+                            // Kiểm tra nếu mã lỗi là 401 - UNAUTHORIZED
+                            if (statusCode == 401) {
+                                // Gọi logout hoặc điều hướng về màn đăng nhập
+                                Logout();
+                            }
                         }
                         else{
                             Toast.makeText(requireContext(), "Lỗi không xác định từ Server", Toast.LENGTH_SHORT).show();
@@ -224,6 +237,18 @@ public class BookingFragment extends Fragment {
                 Toast.makeText(requireContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void Logout() {
+        ReloginDialog dialog = new ReloginDialog(requireContext());
+        dialog.setOnReloginClickListener(() -> {
+            sessionManager.logout();
+            Intent i = new Intent();
+            i.setClass(requireContext(),LoginActivity.class);
+            startActivity(i);
+            requireActivity().finish();
+        });
+        dialog.showReloginMessage();
     }
 
     private void createNotification (ContractDTO contractDTO){

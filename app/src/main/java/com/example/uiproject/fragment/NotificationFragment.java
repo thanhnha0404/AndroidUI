@@ -31,7 +31,7 @@ public class NotificationFragment extends Fragment {
     private List<NotificationModel> list;
 
     private DataBaseHandler dataBaseHandler;
-    private CustomerDTO customerDTO;
+    private CustomerDTO customerDTO = null;
 
     @Nullable
     @Override
@@ -73,7 +73,13 @@ public class NotificationFragment extends Fragment {
         recyclerViewNotifications.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerViewNotifications.setAdapter(notificationAdapter);
 
-        setUpData();
+        if (customerDTO != null){
+            setUpData();
+        }
+        else{
+            toggleEmptyState(true);
+        }
+
 
         return view;
     }
@@ -99,11 +105,9 @@ public class NotificationFragment extends Fragment {
         }
 
         cursor.close();
-
+        notificationAdapter.notifyDataSetChanged();
         // Kiểm tra nếu rỗng thì hiện empty state
         toggleEmptyState(list.isEmpty());
-
-        notificationAdapter.notifyDataSetChanged();
     }
 
     private void toggleEmptyState(boolean isEmpty) {

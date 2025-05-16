@@ -39,7 +39,7 @@ public class HistoryFragment extends Fragment {
     private SwipeRefreshLayout swipeRefresh;
     private LinearLayout emptyState;
     private ContractAdapter contractAdapter;
-    private CustomerDTO customerDTO;
+    private CustomerDTO customerDTO = null;
     private List<ContractDTO> list;
     private ApiService apiService;
 
@@ -60,6 +60,7 @@ public class HistoryFragment extends Fragment {
         apiService = RetrofitClient.getInstance().create(ApiService.class);
         list = new ArrayList<>();
 
+
         // Setup RecyclerView
         rvHistory.setLayoutManager(new LinearLayoutManager(getContext()));
         rvHistory.setHasFixedSize(true);
@@ -79,7 +80,11 @@ public class HistoryFragment extends Fragment {
 
 
     private void loadContract (){
-        if (customerDTO == null ) return;
+        if (customerDTO == null ){
+            toggleEmptyState(true);
+            swipeRefresh.setRefreshing(false);
+            return;
+        }
         Long id = Long.parseLong(customerDTO.getId().toString());
         rvHistory.setAdapter(new ContractShimmerAdapter());
         apiService.getContractByCusId(id).enqueue(new Callback<List<ContractDTO>>() {

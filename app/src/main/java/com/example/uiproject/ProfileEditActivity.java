@@ -26,6 +26,7 @@ import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.example.uiproject.api.ApiService;
 import com.example.uiproject.api.RetrofitClient;
+import com.example.uiproject.dialog.ReloginDialog;
 import com.example.uiproject.entity.CustomerDTO;
 import com.example.uiproject.entity.ErrorResponseDTO;
 import com.example.uiproject.entity.ResultDTO;
@@ -56,7 +57,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private String urlImg;
     private SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-    private CustomerDTO cus;
+    private CustomerDTO cus = null;
     SessionManager sessionManager;
     private ApiService apiService;
     @Override
@@ -146,15 +147,21 @@ public class ProfileEditActivity extends AppCompatActivity {
                             Intent i = new Intent();
                             i.setClass(ProfileEditActivity.this,HomeActivity.class);
                             startActivity(i);
+                            finish();
                         }
                     }
                     else{
                         try {
                             String errorJson = response.errorBody() != null ? response.errorBody().string() : "";
+                            int statusCode = response.code();
                             if (!errorJson.isEmpty() && errorJson != null){
                                 ErrorResponseDTO error = gson.fromJson(errorJson, ErrorResponseDTO.class);
                                 // Hiển thị lỗi từ server
                                 Toast.makeText(ProfileEditActivity.this, error.getError(), Toast.LENGTH_SHORT).show();
+                                if (statusCode == 401) {
+                                    // Gọi logout hoặc điều hướng về màn đăng nhập
+                                    Logout();
+                                }
                             }
                             else{
                                 Toast.makeText(ProfileEditActivity.this, "Lỗi không xác định từ Server", Toast.LENGTH_SHORT).show();
@@ -209,8 +216,6 @@ public class ProfileEditActivity extends AppCompatActivity {
         else{
             performUpdateProfile();
         }
-
-
 
     }
     private Date parseDate(String dateStr) {
@@ -287,7 +292,8 @@ public class ProfileEditActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<CustomerDTO> call, Throwable t) {
-                    Toast.makeText(ProfileEditActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ProfileEditActivity.this, "Phiên đăng nhập hết hạn vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
+                    Logout();
                 }
             });
         }
@@ -298,44 +304,66 @@ public class ProfileEditActivity extends AppCompatActivity {
     }
 
     private void setInforCus (CustomerDTO cus){
-        emailEditText.setText(cus.getEmail());
+        if (cus.getEmail() != null) {
+            emailEditText.setText(cus.getEmail());
+        }
+
         urlImg = cus.getAvatar();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String formated = dateFormat.format(cus.getDateOfBirth());
-        tdobEditText.setText(formated);
+        if (urlImg != null) {
+            Glide.with(ProfileEditActivity.this)
+                    .load(urlImg)
+                    .override(500, 500)
+                    .placeholder(R.drawable.car_background)
+                    .error(R.drawable.car_background)
+                    .into(avatarImageView);
+        }
+
+        if (cus.getDateOfBirth() != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+            String formatted = dateFormat.format(cus.getDateOfBirth());
+            tdobEditText.setText(formatted);
+        }
+
         String sex = cus.getSex();
-        for (int i=0; i< sexs.getChildCount(); i++){
-            View view = sexs.getChildAt(i);
-            if (view instanceof RadioButton){
-                RadioButton radioButton = (RadioButton) view;
-                if (radioButton.getText().toString().equalsIgnoreCase(sex)){
-                    radioButton.setChecked(true);
-                    break;
+        if (sex != null && !sex.isEmpty()) {
+            for (int i = 0; i < sexs.getChildCount(); i++) {
+                View view = sexs.getChildAt(i);
+                if (view instanceof RadioButton) {
+                    RadioButton radioButton = (RadioButton) view;
+                    if (radioButton.getText().toString().equalsIgnoreCase(sex)) {
+                        radioButton.setChecked(true);
+                        break;
+                    }
                 }
             }
         }
 
-        if (cus.getAvatar() != null) {
-            Glide.with(ProfileEditActivity.this)
-                    .load(urlImg)
-                    .override(500, 500) // hoặc brand.getLogo() nếu là URL ảnh
-                    .placeholder(R.drawable.car_background) // ảnh tạm thời khi đang load
-                    .error(R.drawable.car_background)       // ảnh lỗi nếu load thất bại
-                    .into(avatarImageView);
+        if (cus.getAddressDTO() != null) {
+            if (cus.getAddressDTO().getStreet() != null)
+                streetEditText.setText(cus.getAddressDTO().getStreet());
+
+            if (cus.getAddressDTO().getWard() != null)
+                wardEditText.setText(cus.getAddressDTO().getWard());
+
+            if (cus.getAddressDTO().getDistrict() != null)
+                districtEditText.setText(cus.getAddressDTO().getDistrict());
+
+            if (cus.getAddressDTO().getProvince() != null)
+                provinceEditText.setText(cus.getAddressDTO().getProvince());
         }
 
-        streetEditText.setText(cus.getAddressDTO().getStreet());
-        wardEditText.setText(cus.getAddressDTO().getWard());
-        districtEditText.setText(cus.getAddressDTO().getDistrict());
-        provinceEditText.setText(cus.getAddressDTO().getProvince());
     }
 
     private void Logout (){
-        sessionManager.logout();
-        Intent i = new Intent();
-        i.setClass(ProfileEditActivity.this,LoginActivity.class);
-        startActivity(i);
-        finish();
+        ReloginDialog dialog = new ReloginDialog(this);
+        dialog.setOnReloginClickListener(() -> {
+            sessionManager.logout();
+            Intent i = new Intent();
+            i.setClass(ProfileEditActivity.this,LoginActivity.class);
+            startActivity(i);
+            finish();
+        });
+        dialog.showReloginMessage();
     }
 
     @Override

@@ -31,7 +31,7 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity {
     private BottomNavigationView bottomNavigationView;
     private ApiService apiService;
-    private CustomerDTO cus;
+    private CustomerDTO cus = null;
     SessionManager sessionManager;
 
     @Override
@@ -72,21 +72,18 @@ public class HomeActivity extends AppCompatActivity {
                         sessionManager.saveUser(cus.getId(),cus.getEmail());
                         setUpBottomNavigation();
                     }
-                    else{
-                        Toast.makeText(HomeActivity.this, "Phiên đăng nhập hết hạn vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
-                        Logout();
-                    }
                 }
 
                 @Override
                 public void onFailure(Call<CustomerDTO> call, Throwable t) {
-                    Toast.makeText(HomeActivity.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeActivity.this, "Người dùng chưa đăng nhập", Toast.LENGTH_SHORT).show();
+                    setUpBottomNavigation();
                 }
             });
         }
         else{
-            Toast.makeText(HomeActivity.this, "Phiên đăng nhập hết hạn vui lòng đăng nhập lại!", Toast.LENGTH_SHORT).show();
-            Logout();
+            Toast.makeText(HomeActivity.this, "Người dùng chưa đăng nhập", Toast.LENGTH_SHORT).show();
+            setUpBottomNavigation();
         }
     }
 
@@ -118,13 +115,5 @@ public class HomeActivity extends AppCompatActivity {
             return true;
         });
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
-    }
-
-    private void Logout (){
-        sessionManager.logout();
-        Intent i = new Intent();
-        i.setClass(HomeActivity.this,LoginActivity.class);
-        startActivity(i);
-        finish();
     }
 } 

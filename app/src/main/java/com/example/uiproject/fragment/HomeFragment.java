@@ -1,5 +1,6 @@
 package com.example.uiproject.fragment;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.example.uiproject.LoginActivity;
+import com.example.uiproject.ProfileEditActivity;
 import com.example.uiproject.R;
 import com.example.uiproject.adapter.BrandAdapter;
 import com.example.uiproject.adapter.BrandShimmerAdapter;
@@ -65,7 +68,7 @@ public class HomeFragment extends Fragment {
     TextView tv_location;
     TextView seeAll2;
     TextView soThongBaoMoi;
-    CustomerDTO customer;
+    CustomerDTO customer = null;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -87,7 +90,9 @@ public class HomeFragment extends Fragment {
         setupBrandsRecyclerView();
         setupVehiclesRecyclerView();
         setupNewVehiclesRecyclerView();
-        setUpNotification();
+        if (customer != null && dataBaseHandler != null){
+            setUpNotification();
+        }
         
         return view;
     }
@@ -96,6 +101,7 @@ public class HomeFragment extends Fragment {
         String sql = " SELECT * FROM Notifications WHERE is_read = 0 AND idUser = " + customer.getId() + " ";
         Cursor cursor = dataBaseHandler.GetData(sql);
         Integer notifications = cursor.getCount();
+        cursor.close();
         soThongBaoMoi.setText(notifications.toString());
     }
     
@@ -127,11 +133,28 @@ public class HomeFragment extends Fragment {
             }
         }
 
+        iv_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent();
+                if (customer == null){
+                    i.setClass(requireContext(), LoginActivity.class);
+                }
+                else{
+                    i.setClass(requireContext(), ProfileEditActivity.class);
+                }
+                startActivity(i);
+            }
+        });
 
         tv_location = view.findViewById(R.id.tv_location);
-        if (customer != null){
-            String location = customer.getAddressDTO().getStreet() + ", " + customer.getAddressDTO().getDistrict();
+        if (customer != null && customer.getAddressDTO() != null) {
+            String street = customer.getAddressDTO().getStreet() != null ? customer.getAddressDTO().getStreet() : "";
+            String district = customer.getAddressDTO().getDistrict() != null ? customer.getAddressDTO().getDistrict() : "";
+            String location = street + (street.isEmpty() || district.isEmpty() ? "" : ", ") + district;
             tv_location.setText(location);
+        } else {
+            tv_location.setText("None");
         }
         
         // Set click listeners
