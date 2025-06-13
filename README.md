@@ -10,7 +10,7 @@ Rental Car là một ứng dụng di động hiện đại, được phát tri�
   
 ---
 
-## Hình ảnh giao diện của ứng dụng
+## 🖼️ Hình ảnh giao diện của ứng dụng
 <p align="center">
   <img src="image/anh(1).jpg" width="200" style="border:1px solid #ccc; padding:5px; border-radius:10px;"/>
   <img src="image/anh(2).jpg" width="200" style="border:1px solid #ccc; padding:5px; border-radius:10px;"/>
